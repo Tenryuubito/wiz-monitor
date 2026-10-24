@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf" date="2026-10-24T12:00:00Z" product-name="wiz_monitor">
+		<header/>
+		<body>
+			<trans-unit id="tx_wizmonitor_project" resname="tx_wizmonitor_project">
+				<source>Monitored project</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.title" resname="tx_wizmonitor_project.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.base_url" resname="tx_wizmonitor_project.base_url">
+				<source>Base URL</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.base_url.description" resname="tx_wizmonitor_project.base_url.description">
+				<source>The status endpoint is requested at &lt;base URL&gt;/wiz-monitor/status.</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.check_urls" resname="tx_wizmonitor_project.check_urls">
+				<source>URLs for availability checks</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.check_urls.description" resname="tx_wizmonitor_project.check_urls.description">
+				<source>One URL per line. If empty, the base URL is checked.</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.expected_keyword" resname="tx_wizmonitor_project.expected_keyword">
+				<source>Expected keyword</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.expected_keyword.description" resname="tx_wizmonitor_project.expected_keyword.description">
+				<source>Optional text that every checked page has to contain.</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.hidden" resname="tx_wizmonitor_project.hidden">
+				<source>Disable monitoring</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
