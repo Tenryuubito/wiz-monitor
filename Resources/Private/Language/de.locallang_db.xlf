@@ -20,12 +20,12 @@
 				<target>Der Status-Endpunkt wird unter &lt;Basis-URL&gt;/wiz-monitor/status abgefragt.</target>
 			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.check_urls" resname="tx_wizmonitor_project.check_urls">
-				<source>URLs for availability checks</source>
-				<target>URLs für die Erreichbarkeitsprüfung</target>
+				<source>Paths for availability checks</source>
+				<target>Pfade für die Erreichbarkeitsprüfung</target>
 			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.check_urls.description" resname="tx_wizmonitor_project.check_urls.description">
-				<source>One URL per line. If empty, the base URL is checked.</source>
-				<target>Eine URL pro Zeile. Ist das Feld leer, wird die Basis-URL geprüft.</target>
+				<source>One path per line relative to the base URL, e.g. /services or /en/services. If empty, the start page is checked.</source>
+				<target>Ein Pfad pro Zeile relativ zur Basis-URL, z. B. /leistungen oder /en/services. Ist das Feld leer, wird die Startseite geprüft.</target>
 			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.expected_keyword" resname="tx_wizmonitor_project.expected_keyword">
 				<source>Expected keyword</source>

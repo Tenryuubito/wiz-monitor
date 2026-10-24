@@ -16,10 +16,10 @@
 				<source>The status endpoint is requested at &lt;base URL&gt;/wiz-monitor/status.</source>
 			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.check_urls" resname="tx_wizmonitor_project.check_urls">
-				<source>URLs for availability checks</source>
+				<source>Paths for availability checks</source>
 			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.check_urls.description" resname="tx_wizmonitor_project.check_urls.description">
-				<source>One URL per line. If empty, the base URL is checked.</source>
+				<source>One path per line relative to the base URL, e.g. /services or /en/services. If empty, the start page is checked.</source>
 			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.expected_keyword" resname="tx_wizmonitor_project.expected_keyword">
 				<source>Expected keyword</source>

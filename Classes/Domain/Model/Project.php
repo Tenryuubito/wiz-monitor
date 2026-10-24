@@ -20,7 +20,13 @@ final readonly class Project
     {
         $baseUrl = rtrim(trim((string)$row['base_url']), '/');
         $checkUrls = array_values(array_unique(array_filter(
-            array_map('trim', preg_split('/\R/', (string)($row['check_urls'] ?? '')) ?: []),
+            array_map(
+                static fn(string $path): string => $baseUrl . '/' . ltrim($path, '/'),
+                array_filter(
+                    array_map('trim', preg_split('/\R/', (string)($row['check_urls'] ?? '')) ?: []),
+                    self::isRelativePath(...),
+                ),
+            ),
             static fn(string $url): bool => filter_var($url, FILTER_VALIDATE_URL) !== false,
         )));
 
@@ -33,6 +39,15 @@ final readonly class Project
             encryptedSecret: (string)($row['secret_encrypted'] ?? ''),
             disabled: (bool)($row['hidden'] ?? false),
         );
+    }
+
+    private static function isRelativePath(string $path): bool
+    {
+        if ($path === '' || str_starts_with($path, '//')) {
+            return false;
+        }
+        $parts = parse_url($path);
+        return $parts !== false && !isset($parts['scheme']) && !isset($parts['host']);
     }
 
     public function isSecretConfigured(): bool
