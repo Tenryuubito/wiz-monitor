@@ -1,0 +1,12 @@
+<f:layout name="SystemEmail" />
+<f:section name="Title">{headline -> f:format.raw()}</f:section>
+<f:section name="Main"><f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />{project.title -> f:format.raw()}
+{project.baseUrl -> f:format.raw()}
+<f:for each="{transitions}" as="transition">
+{f:translate(key: '{ll}category.{transition.category}', languageKey: language) -> f:format.raw()}: {f:translate(key: '{ll}notification.transition.{transition.type}', arguments: {0: transition.previousStatusLabel, 1: transition.statusLabel}, languageKey: language) -> f:format.raw()}
+<f:for each="{transition.findings}" as="finding">- [{finding.statusLabel -> f:format.raw()}] {f:translate(key: '{ll}finding.{finding.key}', arguments: finding.arguments, languageKey: language) -> f:format.raw()}
+</f:for></f:for>
+<f:if condition="{newErrors}">{f:translate(key: '{ll}notification.newErrors', arguments: {0: newErrorCount}, languageKey: language) -> f:format.raw()}
+<f:for each="{newErrors}" as="error">- {error.level -> f:format.raw()}: {error.message -> f:format.raw()} ({error.file -> f:format.raw()}:{error.line} {error.request_url -> f:format.raw()})
+</f:for><f:if condition="{hiddenErrorCount}">{f:translate(key: '{ll}notification.moreErrors', arguments: {0: hiddenErrorCount}, languageKey: language) -> f:format.raw()}
+</f:if></f:if></f:section>

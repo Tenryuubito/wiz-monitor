@@ -1,0 +1,41 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="SystemEmail" />
+<f:section name="Title">{headline}</f:section>
+<f:section name="Main">
+    <f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
+    <p>
+        <strong>{project.title}</strong><br>
+        <a href="{project.baseUrl}">{project.baseUrl}</a>
+    </p>
+    <f:for each="{transitions}" as="transition">
+        <h4>
+            <f:translate key="{ll}category.{transition.category}" languageKey="{language}" />:
+            <f:translate key="{ll}notification.transition.{transition.type}" arguments="{0: transition.previousStatusLabel, 1: transition.statusLabel}" languageKey="{language}" />
+        </h4>
+        <f:if condition="{transition.findings}">
+            <ul>
+                <f:for each="{transition.findings}" as="finding">
+                    <li>
+                        [{finding.statusLabel}]
+                        <f:translate key="{ll}finding.{finding.key}" arguments="{finding.arguments}" languageKey="{language}" />
+                    </li>
+                </f:for>
+            </ul>
+        </f:if>
+    </f:for>
+    <f:if condition="{newErrors}">
+        <h4><f:translate key="{ll}notification.newErrors" arguments="{0: newErrorCount}" languageKey="{language}" /></h4>
+        <ul>
+            <f:for each="{newErrors}" as="error">
+                <li>
+                    <strong>{error.level}</strong>: {error.message}<br>
+                    <small>{error.exception_class} · {error.file}:{error.line} · {error.request_url}</small>
+                </li>
+            </f:for>
+        </ul>
+        <f:if condition="{hiddenErrorCount}">
+            <p><f:translate key="{ll}notification.moreErrors" arguments="{0: hiddenErrorCount}" languageKey="{language}" /></p>
+        </f:if>
+    </f:if>
+</f:section>
+</html>

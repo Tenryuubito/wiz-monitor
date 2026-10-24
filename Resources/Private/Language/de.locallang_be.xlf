@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf" date="2026-10-24T12:00:00Z" product-name="wiz_monitor">
+		<header/>
+		<body>
+			<trans-unit id="module.title" resname="module.title">
+				<source>Wiz Monitor</source>
+				<target>Wiz Monitor</target>
+			</trans-unit>
+			<trans-unit id="module.overview.title" resname="module.overview.title">
+				<source>Monitored projects</source>
+				<target>Überwachte Projekte</target>
+			</trans-unit>
+			<trans-unit id="module.detail.title" resname="module.detail.title">
+				<source>Project details</source>
+				<target>Projektdetails</target>
+			</trans-unit>
+			<trans-unit id="module.secret.title" resname="module.secret.title">
+				<source>New project secret</source>
+				<target>Neues Projekt-Secret</target>
+			</trans-unit>
+			<trans-unit id="module.overview.empty.title" resname="module.overview.empty.title">
+				<source>No projects yet</source>
+				<target>Noch keine Projekte</target>
+			</trans-unit>
+			<trans-unit id="module.overview.empty.message" resname="module.overview.empty.message">
+				<source>Create a project with "New project" to start monitoring.</source>
+				<target>Lege über „Neues Projekt“ ein Projekt an, um mit dem Monitoring zu beginnen.</target>
+			</trans-unit>
+			<trans-unit id="module.action.new" resname="module.action.new">
+				<source>New project</source>
+				<target>Neues Projekt</target>
+			</trans-unit>
+			<trans-unit id="module.action.edit" resname="module.action.edit">
+				<source>Edit project</source>
+				<target>Projekt bearbeiten</target>
+			</trans-unit>
+			<trans-unit id="module.action.run" resname="module.action.run">
+				<source>Check now</source>
+				<target>Jetzt prüfen</target>
+			</trans-unit>
+			<trans-unit id="module.action.generateSecret" resname="module.action.generateSecret">
+				<source>Generate secret</source>
+				<target>Secret erzeugen</target>
+			</trans-unit>
+			<trans-unit id="module.action.rotateSecret" resname="module.action.rotateSecret">
+				<source>Rotate secret</source>
+				<target>Secret erneuern</target>
+			</trans-unit>
+			<trans-unit id="module.run.completed" resname="module.run.completed">
+				<source>The project has been checked.</source>
+				<target>Das Projekt wurde geprüft.</target>
+			</trans-unit>
+			<trans-unit id="module.run.failed" resname="module.run.failed">
+				<source>The check failed. Details are available in the log.</source>
+				<target>Die Prüfung ist fehlgeschlagen. Details stehen im Log.</target>
+			</trans-unit>
+			<trans-unit id="module.secret.hint" resname="module.secret.hint">
+				<source>The client reads the secret from the environment variable %1$s.</source>
+				<target>Der Client liest das Secret aus der Umgebungsvariable %1$s.</target>
+			</trans-unit>
+			<trans-unit id="module.secret.instructions" resname="module.secret.instructions">
+				<source>Add this line to the .env file of the monitored installation and flush its caches:</source>
+				<target>Trage diese Zeile in die .env-Datei der überwachten Installation ein und leere dort die Caches:</target>
+			</trans-unit>
+			<trans-unit id="module.secret.onceOnly" resname="module.secret.onceOnly">
+				<source>The secret is shown only once. It is stored encrypted and cannot be displayed again. The previous secret is no longer valid.</source>
+				<target>Das Secret wird nur einmal angezeigt. Es wird verschlüsselt gespeichert und kann nicht erneut angezeigt werden. Das bisherige Secret ist ab sofort ungültig.</target>
+			</trans-unit>
+			<trans-unit id="module.section.status" resname="module.section.status">
+				<source>Status</source>
+				<target>Status</target>
+			</trans-unit>
+			<trans-unit id="module.section.checks" resname="module.section.checks">
+				<source>Availability checks</source>
+				<target>Erreichbarkeitsprüfungen</target>
+			</trans-unit>
+			<trans-unit id="module.section.errors" resname="module.section.errors">
+				<source>Errors</source>
+				<target>Fehler</target>
+			</trans-unit>
+			<trans-unit id="module.section.incidents" resname="module.section.incidents">
+				<source>Incidents</source>
+				<target>Vorfälle</target>
+			</trans-unit>
+			<trans-unit id="module.section.environment" resname="module.section.environment">
+				<source>Environment</source>
+				<target>Umgebung</target>
+			</trans-unit>
+			<trans-unit id="module.section.scheduler" resname="module.section.scheduler">
+				<source>Scheduler tasks</source>
+				<target>Scheduler-Tasks</target>
+			</trans-unit>
+			<trans-unit id="module.section.packages" resname="module.section.packages">
+				<source>Installed packages</source>
+				<target>Installierte Pakete</target>
+			</trans-unit>
+			<trans-unit id="module.column.project" resname="module.column.project">
+				<source>Project</source>
+				<target>Projekt</target>
+			</trans-unit>
+			<trans-unit id="module.column.overall" resname="module.column.overall">
+				<source>Overall</source>
+				<target>Gesamt</target>
+			</trans-unit>
+			<trans-unit id="module.column.lastSuccess" resname="module.column.lastSuccess">
+				<source>Last successful status fetch</source>
+				<target>Letzter erfolgreicher Statusabruf</target>
+			</trans-unit>
+			<trans-unit id="module.column.lastAttempt" resname="module.column.lastAttempt">
+				<source>Last status fetch attempt</source>
+				<target>Letzter Abrufversuch</target>
+			</trans-unit>
+			<trans-unit id="module.column.lastEvaluation" resname="module.column.lastEvaluation">
+				<source>Last evaluation</source>
+				<target>Letzte Bewertung</target>
+			</trans-unit>
+			<trans-unit id="module.column.failureReason" resname="module.column.failureReason">
+				<source>Last failure</source>
+				<target>Letzter Fehler</target>
+			</trans-unit>
+			<trans-unit id="module.column.url" resname="module.column.url">
+				<source>URL</source>
+				<target>URL</target>
+			</trans-unit>
+			<trans-unit id="module.column.httpStatus" resname="module.column.httpStatus">
+				<source>HTTP status</source>
+				<target>HTTP-Status</target>
+			</trans-unit>
+			<trans-unit id="module.column.responseTime" resname="module.column.responseTime">
+				<source>Response time</source>
+				<target>Antwortzeit</target>
+			</trans-unit>
+			<trans-unit id="module.column.tlsExpiresAt" resname="module.column.tlsExpiresAt">
+				<source>Certificate valid until</source>
+				<target>Zertifikat gültig bis</target>
+			</trans-unit>
+			<trans-unit id="module.column.checkedAt" resname="module.column.checkedAt">
+				<source>Checked at</source>
+				<target>Geprüft am</target>
+			</trans-unit>
+			<trans-unit id="module.column.level" resname="module.column.level">
+				<source>Level</source>
+				<target>Level</target>
+			</trans-unit>
+			<trans-unit id="module.column.message" resname="module.column.message">
+				<source>Message</source>
+				<target>Meldung</target>
+			</trans-unit>
+			<trans-unit id="module.column.occurrences" resname="module.column.occurrences">
+				<source>Occurrences</source>
+				<target>Vorkommen</target>
+			</trans-unit>
+			<trans-unit id="module.column.firstSeen" resname="module.column.firstSeen">
+				<source>First seen</source>
+				<target>Erstmals</target>
+			</trans-unit>
+			<trans-unit id="module.column.lastSeen" resname="module.column.lastSeen">
+				<source>Last seen</source>
+				<target>Zuletzt</target>
+			</trans-unit>
+			<trans-unit id="module.column.category" resname="module.column.category">
+				<source>Category</source>
+				<target>Bereich</target>
+			</trans-unit>
+			<trans-unit id="module.column.status" resname="module.column.status">
+				<source>Status</source>
+				<target>Status</target>
+			</trans-unit>
+			<trans-unit id="module.column.findings" resname="module.column.findings">
+				<source>Findings</source>
+				<target>Befunde</target>
+			</trans-unit>
+			<trans-unit id="module.column.openedAt" resname="module.column.openedAt">
+				<source>Opened</source>
+				<target>Geöffnet</target>
+			</trans-unit>
+			<trans-unit id="module.column.resolvedAt" resname="module.column.resolvedAt">
+				<source>Resolved</source>
+				<target>Behoben</target>
+			</trans-unit>
+			<trans-unit id="module.column.task" resname="module.column.task">
+				<source>Task</source>
+				<target>Task</target>
+			</trans-unit>
+			<trans-unit id="module.column.lastExecution" resname="module.column.lastExecution">
+				<source>Last execution</source>
+				<target>Letzte Ausführung</target>
+			</trans-unit>
+			<trans-unit id="module.column.nextExecution" resname="module.column.nextExecution">
+				<source>Next execution</source>
+				<target>Nächste Ausführung</target>
+			</trans-unit>
+			<trans-unit id="module.column.package" resname="module.column.package">
+				<source>Package</source>
+				<target>Paket</target>
+			</trans-unit>
+			<trans-unit id="module.column.version" resname="module.column.version">
+				<source>Version</source>
+				<target>Version</target>
+			</trans-unit>
+			<trans-unit id="module.column.type" resname="module.column.type">
+				<source>Type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="module.column.advisories" resname="module.column.advisories">
+				<source>Security advisories</source>
+				<target>Sicherheitslücken</target>
+			</trans-unit>
+			<trans-unit id="module.project.disabled" resname="module.project.disabled">
+				<source>disabled</source>
+				<target>deaktiviert</target>
+			</trans-unit>
+			<trans-unit id="module.findings.none" resname="module.findings.none">
+				<source>No findings</source>
+				<target>Keine Befunde</target>
+			</trans-unit>
+			<trans-unit id="module.empty" resname="module.empty">
+				<source>No data yet.</source>
+				<target>Noch keine Daten.</target>
+			</trans-unit>
+			<trans-unit id="module.value.never" resname="module.value.never">
+				<source>never</source>
+				<target>nie</target>
+			</trans-unit>
+			<trans-unit id="module.value.milliseconds" resname="module.value.milliseconds">
+				<source>%1$s ms</source>
+				<target>%1$s ms</target>
+			</trans-unit>
+			<trans-unit id="module.incident.open" resname="module.incident.open">
+				<source>open</source>
+				<target>offen</target>
+			</trans-unit>
+			<trans-unit id="module.task.disabled" resname="module.task.disabled">
+				<source>disabled</source>
+				<target>deaktiviert</target>
+			</trans-unit>
+			<trans-unit id="module.task.failed" resname="module.task.failed">
+				<source>failed</source>
+				<target>fehlgeschlagen</target>
+			</trans-unit>
+			<trans-unit id="module.task.active" resname="module.task.active">
+				<source>active</source>
+				<target>aktiv</target>
+			</trans-unit>
+			<trans-unit id="format.dateTime" resname="format.dateTime">
+				<source>Y-m-d H:i</source>
+				<target>d.m.Y H:i</target>
+			</trans-unit>
+			<trans-unit id="status.ok" resname="status.ok">
+				<source>OK</source>
+				<target>OK</target>
+			</trans-unit>
+			<trans-unit id="status.warning" resname="status.warning">
+				<source>Warning</source>
+				<target>Warnung</target>
+			</trans-unit>
+			<trans-unit id="status.critical" resname="status.critical">
+				<source>Critical</source>
+				<target>Kritisch</target>
+			</trans-unit>
+			<trans-unit id="status.unknown" resname="status.unknown">
+				<source>Unknown</source>
+				<target>Unbekannt</target>
+			</trans-unit>
+			<trans-unit id="category.availability" resname="category.availability">
+				<source>Availability</source>
+				<target>Erreichbarkeit</target>
+			</trans-unit>
+			<trans-unit id="category.security" resname="category.security">
+				<source>Security</source>
+				<target>Sicherheit</target>
+			</trans-unit>
+			<trans-unit id="category.errors" resname="category.errors">
+				<source>Errors</source>
+				<target>Fehler</target>
+			</trans-unit>
+			<trans-unit id="category.system" resname="category.system">
+				<source>System</source>
+				<target>System</target>
+			</trans-unit>
+			<trans-unit id="environment.typo3Version" resname="environment.typo3Version">
+				<source>TYPO3 version</source>
+				<target>TYPO3-Version</target>
+			</trans-unit>
+			<trans-unit id="environment.phpVersion" resname="environment.phpVersion">
+				<source>PHP version</source>
+				<target>PHP-Version</target>
+			</trans-unit>
+			<trans-unit id="environment.applicationContext" resname="environment.applicationContext">
+				<source>Application context</source>
+				<target>Application Context</target>
+			</trans-unit>
+			<trans-unit id="environment.database" resname="environment.database">
+				<source>Database</source>
+				<target>Datenbank</target>
+			</trans-unit>
+			<trans-unit id="environment.operatingSystem" resname="environment.operatingSystem">
+				<source>Operating system</source>
+				<target>Betriebssystem</target>
+			</trans-unit>
+			<trans-unit id="environment.memoryLimit" resname="environment.memoryLimit">
+				<source>Memory limit</source>
+				<target>Memory Limit</target>
+			</trans-unit>
+			<trans-unit id="environment.maxExecutionTime" resname="environment.maxExecutionTime">
+				<source>Maximum execution time (s)</source>
+				<target>Maximale Ausführungszeit (s)</target>
+			</trans-unit>
+			<trans-unit id="environment.siteBaseUrls" resname="environment.siteBaseUrls">
+				<source>Site base URLs</source>
+				<target>Basis-URLs der Sites</target>
+			</trans-unit>
+			<trans-unit id="environment.diskSpace" resname="environment.diskSpace">
+				<source>Free disk space</source>
+				<target>Freier Speicherplatz</target>
+			</trans-unit>
+			<trans-unit id="environment.administrators" resname="environment.administrators">
+				<source>Active administrators</source>
+				<target>Aktive Administratoren</target>
+			</trans-unit>
+			<trans-unit id="environment.failedLogins" resname="environment.failedLogins">
+				<source>Failed logins (24 h)</source>
+				<target>Fehlgeschlagene Logins (24 h)</target>
+			</trans-unit>
+			<trans-unit id="notification.subject" resname="notification.subject">
+				<source>[%1$s] Wiz Monitor: %2$s</source>
+				<target>[%1$s] Wiz Monitor: %2$s</target>
+			</trans-unit>
+			<trans-unit id="notification.transition.opened" resname="notification.transition.opened">
+				<source>new problem (%2$s)</source>
+				<target>neues Problem (%2$s)</target>
+			</trans-unit>
+			<trans-unit id="notification.transition.changed" resname="notification.transition.changed">
+				<source>changed from %1$s to %2$s</source>
+				<target>geändert von %1$s auf %2$s</target>
+			</trans-unit>
+			<trans-unit id="notification.transition.resolved" resname="notification.transition.resolved">
+				<source>resolved (previously %1$s)</source>
+				<target>behoben (vorher %1$s)</target>
+			</trans-unit>
+			<trans-unit id="notification.newErrors" resname="notification.newErrors">
+				<source>New error types: %1$s</source>
+				<target>Neue Fehlerarten: %1$s</target>
+			</trans-unit>
+			<trans-unit id="notification.moreErrors" resname="notification.moreErrors">
+				<source>%1$s more are listed in the backend module.</source>
+				<target>%1$s weitere stehen im Backend-Modul.</target>
+			</trans-unit>
+			<trans-unit id="configuration.notificationRecipient" resname="configuration.notificationRecipient">
+				<source>Notification recipient (email address)</source>
+				<target>Empfänger der Benachrichtigungen (E-Mail-Adresse)</target>
+			</trans-unit>
+			<trans-unit id="configuration.notificationLanguage" resname="configuration.notificationLanguage">
+				<source>Notification language, for example en or de</source>
+				<target>Sprache der Benachrichtigungen, z. B. en oder de</target>
+			</trans-unit>
+			<trans-unit id="configuration.requestTimeout" resname="configuration.requestTimeout">
+				<source>Request timeout in seconds</source>
+				<target>Timeout für Anfragen in Sekunden</target>
+			</trans-unit>
+			<trans-unit id="configuration.slowResponseThreshold" resname="configuration.slowResponseThreshold">
+				<source>Slow response threshold in milliseconds</source>
+				<target>Schwelle für langsame Antworten in Millisekunden</target>
+			</trans-unit>
+			<trans-unit id="configuration.retentionDays" resname="configuration.retentionDays">
+				<source>Retention of checks, errors and resolved incidents in days</source>
+				<target>Aufbewahrung von Checks, Fehlern und behobenen Vorfällen in Tagen</target>
+			</trans-unit>
+			<trans-unit id="finding.general.not_evaluated" resname="finding.general.not_evaluated">
+				<source>Not evaluated yet</source>
+				<target>Noch nicht bewertet</target>
+			</trans-unit>
+			<trans-unit id="finding.general.evaluation_failed" resname="finding.general.evaluation_failed">
+				<source>Evaluation failed: %1$s</source>
+				<target>Bewertung fehlgeschlagen: %1$s</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.no_checks" resname="finding.availability.no_checks">
+				<source>No availability checks yet</source>
+				<target>Noch keine Erreichbarkeitsprüfungen</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.http_status" resname="finding.availability.http_status">
+				<source>%1$s responded with HTTP %2$s</source>
+				<target>%1$s antwortet mit HTTP %2$s</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.unreachable" resname="finding.availability.unreachable">
+				<source>%1$s is unreachable: %2$s</source>
+				<target>%1$s ist nicht erreichbar: %2$s</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.keyword_missing" resname="finding.availability.keyword_missing">
+				<source>%1$s does not contain the expected keyword "%2$s"</source>
+				<target>%1$s enthält den erwarteten Begriff „%2$s“ nicht</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.slow" resname="finding.availability.slow">
+				<source>%1$s responded slowly (%2$s ms)</source>
+				<target>%1$s antwortet langsam (%2$s ms)</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.tls_expired" resname="finding.availability.tls_expired">
+				<source>The TLS certificate of %1$s expired on %2$s</source>
+				<target>Das TLS-Zertifikat von %1$s ist am %2$s abgelaufen</target>
+			</trans-unit>
+			<trans-unit id="finding.availability.tls_expiring" resname="finding.availability.tls_expiring">
+				<source>The TLS certificate of %1$s expires in %2$s days</source>
+				<target>Das TLS-Zertifikat von %1$s läuft in %2$s Tagen ab</target>
+			</trans-unit>
+			<trans-unit id="finding.security.no_data" resname="finding.security.no_data">
+				<source>No package or version data available yet</source>
+				<target>Noch keine Paket- oder Versionsdaten vorhanden</target>
+			</trans-unit>
+			<trans-unit id="finding.security.no_hardening_data" resname="finding.security.no_hardening_data">
+				<source>No hardening data available</source>
+				<target>Keine Härtungsdaten vorhanden</target>
+			</trans-unit>
+			<trans-unit id="finding.security.lookup_failed" resname="finding.security.lookup_failed">
+				<source>Security data from %1$s is currently unavailable</source>
+				<target>Sicherheitsdaten von %1$s sind derzeit nicht abrufbar</target>
+			</trans-unit>
+			<trans-unit id="finding.security.advisory" resname="finding.security.advisory">
+				<source>%1$s %2$s is affected by %3$s: %4$s</source>
+				<target>%1$s %2$s ist betroffen von %3$s: %4$s</target>
+			</trans-unit>
+			<trans-unit id="finding.security.typo3_security_update" resname="finding.security.typo3_security_update">
+				<source>TYPO3 %1$s is missing the security release %2$s</source>
+				<target>TYPO3 %1$s fehlt das Sicherheitsupdate %2$s</target>
+			</trans-unit>
+			<trans-unit id="finding.security.typo3_update" resname="finding.security.typo3_update">
+				<source>TYPO3 %1$s can be updated to %2$s</source>
+				<target>TYPO3 %1$s kann auf %2$s aktualisiert werden</target>
+			</trans-unit>
+			<trans-unit id="finding.security.typo3_elts_only" resname="finding.security.typo3_elts_only">
+				<source>Regular support for TYPO3 %1$s ended on %2$s, updates are only available through ELTS</source>
+				<target>Der reguläre Support für TYPO3 %1$s endete am %2$s, Updates gibt es nur noch über ELTS</target>
+			</trans-unit>
+			<trans-unit id="finding.security.typo3_end_of_life" resname="finding.security.typo3_end_of_life">
+				<source>TYPO3 %1$s reached its end of life on %2$s</source>
+				<target>TYPO3 %1$s hat am %2$s das Support-Ende erreicht</target>
+			</trans-unit>
+			<trans-unit id="finding.security.php_end_of_life" resname="finding.security.php_end_of_life">
+				<source>PHP %1$s no longer receives security updates since %2$s</source>
+				<target>PHP %1$s erhält seit %2$s keine Sicherheitsupdates mehr</target>
+			</trans-unit>
+			<trans-unit id="finding.security.php_end_of_life_soon" resname="finding.security.php_end_of_life_soon">
+				<source>PHP %1$s receives security updates only until %2$s</source>
+				<target>PHP %1$s erhält nur noch bis %2$s Sicherheitsupdates</target>
+			</trans-unit>
+			<trans-unit id="finding.security.install_tool_enabled" resname="finding.security.install_tool_enabled">
+				<source>The Install Tool is enabled (ENABLE_INSTALL_TOOL exists)</source>
+				<target>Das Install Tool ist aktiviert (ENABLE_INSTALL_TOOL ist vorhanden)</target>
+			</trans-unit>
+			<trans-unit id="finding.security.display_errors" resname="finding.security.display_errors">
+				<source>displayErrors is enabled in a production context</source>
+				<target>displayErrors ist in einem Production-Kontext aktiviert</target>
+			</trans-unit>
+			<trans-unit id="finding.security.trusted_hosts" resname="finding.security.trusted_hosts">
+				<source>trustedHostsPattern allows every host</source>
+				<target>trustedHostsPattern erlaubt jeden Host</target>
+			</trans-unit>
+			<trans-unit id="finding.security.failed_logins" resname="finding.security.failed_logins">
+				<source>%1$s failed logins within 24 hours</source>
+				<target>%1$s fehlgeschlagene Logins innerhalb von 24 Stunden</target>
+			</trans-unit>
+			<trans-unit id="finding.errors.no_data" resname="finding.errors.no_data">
+				<source>No error data available yet</source>
+				<target>Noch keine Fehlerdaten vorhanden</target>
+			</trans-unit>
+			<trans-unit id="finding.errors.recent_critical" resname="finding.errors.recent_critical">
+				<source>%1$s critical error types within 24 hours, latest: %2$s</source>
+				<target>%1$s kritische Fehlerarten innerhalb von 24 Stunden, zuletzt: %2$s</target>
+			</trans-unit>
+			<trans-unit id="finding.errors.recent" resname="finding.errors.recent">
+				<source>%1$s error types within 24 hours, latest: %2$s</source>
+				<target>%1$s Fehlerarten innerhalb von 24 Stunden, zuletzt: %2$s</target>
+			</trans-unit>
+			<trans-unit id="finding.system.no_secret" resname="finding.system.no_secret">
+				<source>No secret configured, status data cannot be fetched</source>
+				<target>Kein Secret hinterlegt, Statusdaten können nicht abgerufen werden</target>
+			</trans-unit>
+			<trans-unit id="finding.system.no_data" resname="finding.system.no_data">
+				<source>Status data has not been fetched yet</source>
+				<target>Statusdaten wurden noch nicht abgerufen</target>
+			</trans-unit>
+			<trans-unit id="finding.system.status_endpoint_unreachable" resname="finding.system.status_endpoint_unreachable">
+				<source>The status endpoint has never responded successfully: %1$s</source>
+				<target>Der Status-Endpunkt hat noch nie erfolgreich geantwortet: %1$s</target>
+			</trans-unit>
+			<trans-unit id="finding.system.status_endpoint_failed" resname="finding.system.status_endpoint_failed">
+				<source>Status fetch failed: %1$s (last success %2$s)</source>
+				<target>Statusabruf fehlgeschlagen: %1$s (zuletzt erfolgreich %2$s)</target>
+			</trans-unit>
+			<trans-unit id="finding.system.collector_failed" resname="finding.system.collector_failed">
+				<source>Collector "%1$s" failed: %2$s</source>
+				<target>Collector „%1$s“ ist fehlgeschlagen: %2$s</target>
+			</trans-unit>
+			<trans-unit id="finding.system.development_context" resname="finding.system.development_context">
+				<source>The installation runs in the %1$s context</source>
+				<target>Die Installation läuft im Kontext %1$s</target>
+			</trans-unit>
+			<trans-unit id="finding.system.var_not_writable" resname="finding.system.var_not_writable">
+				<source>The var directory is not writable</source>
+				<target>Das var-Verzeichnis ist nicht beschreibbar</target>
+			</trans-unit>
+			<trans-unit id="finding.system.disk_space" resname="finding.system.disk_space">
+				<source>Only %1$s %% disk space left</source>
+				<target>Nur noch %1$s %% Speicherplatz frei</target>
+			</trans-unit>
+			<trans-unit id="finding.system.scheduler_task_failed" resname="finding.system.scheduler_task_failed">
+				<source>Scheduler task %1$s failed on its last run</source>
+				<target>Scheduler-Task %1$s ist beim letzten Lauf fehlgeschlagen</target>
+			</trans-unit>
+			<trans-unit id="finding.system.scheduler_task_overdue" resname="finding.system.scheduler_task_overdue">
+				<source>Scheduler task %1$s is overdue since %2$s</source>
+				<target>Scheduler-Task %1$s ist seit %2$s überfällig</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
