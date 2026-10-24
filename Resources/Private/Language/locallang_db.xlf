@@ -21,6 +21,12 @@
 			<trans-unit id="tx_wizmonitor_project.check_urls.description" resname="tx_wizmonitor_project.check_urls.description">
 				<source>One path per line relative to the base URL, e.g. /services or /en/services. If empty, the start page is checked.</source>
 			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.check_pages" resname="tx_wizmonitor_project.check_pages">
+				<source>Pages for availability checks</source>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.check_pages.description" resname="tx_wizmonitor_project.check_pages.description">
+				<source>Comma-separated page UIDs of the monitored installation. The client resolves them to URLs in all enabled languages. Requires the configured secret.</source>
+			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.expected_keyword" resname="tx_wizmonitor_project.expected_keyword">
 				<source>Expected keyword</source>
 			</trans-unit>

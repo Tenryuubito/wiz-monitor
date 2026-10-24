@@ -73,6 +73,11 @@
     </div>
 
     <h2><f:translate key="{ll}module.section.checks" /></h2>
+    <f:if condition="{unresolvedPageUids}">
+        <div class="alert alert-warning">
+            <f:translate key="{ll}module.checks.unresolvedPages" arguments="{0: unresolvedPageUids}" />
+        </div>
+    </f:if>
     <f:if condition="{checks}">
         <f:then>
             <div class="table-fit">

@@ -37,6 +37,7 @@ final readonly class MonitorRunner
         private IncidentManager $incidentManager,
         private NotificationMailer $notificationMailer,
         private MonitorConfiguration $monitorConfiguration,
+        private CheckTargetResolver $checkTargetResolver,
         private LoggerInterface $logger,
     ) {}
 
@@ -71,17 +72,19 @@ final readonly class MonitorRunner
 
     private function run(Project $project): Evaluation
     {
-        foreach ($project->checkUrls as $url) {
+        $newErrors = $this->synchronizeStatus($project);
+        $snapshot = $this->snapshotRepository->findByProject($project->uid);
+        $checkUrls = $this->checkTargetResolver->resolveUrls($project, $snapshot);
+        foreach ($checkUrls as $url) {
             $this->checkRepository->add($project->uid, $this->httpProbe->probe($url, $project->expectedKeyword), time());
         }
 
-        $newErrors = $this->synchronizeStatus($project);
         $now = time();
         $evaluation = $this->projectEvaluator->evaluate(new EvaluationContext(
             project: $project,
             now: $now,
-            snapshot: $this->snapshotRepository->findByProject($project->uid),
-            checksByUrl: $this->checkRepository->findRecentGroupedByUrl($project->uid, $project->checkUrls, self::CHECKS_PER_URL),
+            snapshot: $snapshot,
+            checksByUrl: $this->checkRepository->findRecentGroupedByUrl($project->uid, $checkUrls, self::CHECKS_PER_URL),
             recentErrors: $this->errorRepository->findSeenSince($project->uid, $now - self::RECENT_ERROR_SECONDS),
         ));
         $this->snapshotRepository->saveEvaluation($project->uid, $evaluation->toArray(), $now);

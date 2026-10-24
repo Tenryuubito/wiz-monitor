@@ -23,7 +23,7 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'title, base_url, check_urls, expected_keyword, --div--;core.form.tabs:access, hidden',
+            'showitem' => 'title, base_url, check_urls, check_pages, expected_keyword, --div--;core.form.tabs:access, hidden',
         ],
     ],
     'columns' => [
@@ -56,6 +56,16 @@ return [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 60,
+                'eval' => 'trim',
+            ],
+        ],
+        'check_pages' => [
+            'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.check_pages',
+            'description' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.check_pages.description',
+            'config' => [
+                'type' => 'input',
+                'size' => 40,
+                'max' => 255,
                 'eval' => 'trim',
             ],
         ],

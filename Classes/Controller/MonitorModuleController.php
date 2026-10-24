@@ -19,6 +19,7 @@ use Tenryuubito\WizMonitor\Evaluation\Evaluation;
 use Tenryuubito\WizMonitor\Evaluation\Finding;
 use Tenryuubito\WizMonitor\Notification\NotificationMailer;
 use Tenryuubito\WizMonitor\Security\SecretVault;
+use Tenryuubito\WizMonitor\Service\CheckTargetResolver;
 use Tenryuubito\WizMonitor\Service\MonitorRunner;
 use Tenryuubito\WizMonitorClient\Security\SecretProvider;
 use TYPO3\CMS\Backend\Attribute\AsController;
@@ -53,6 +54,7 @@ final readonly class MonitorModuleController
         private IncidentRepository $incidentRepository,
         private SecretVault $secretVault,
         private MonitorRunner $monitorRunner,
+        private CheckTargetResolver $checkTargetResolver,
     ) {}
 
     public function overviewAction(ServerRequestInterface $request): ResponseInterface
@@ -106,8 +108,9 @@ final readonly class MonitorModuleController
             'categoryResults' => array_map($this->mapCategoryResult(...), $evaluation->getResults()),
             'checks' => array_map(
                 static fn(array $checks): array => $checks[0],
-                $this->checkRepository->findRecentGroupedByUrl($project->uid, $project->checkUrls, 1),
+                $this->checkRepository->findRecentGroupedByUrl($project->uid, $this->checkTargetResolver->resolveUrls($project, $snapshot), 1),
             ),
+            'unresolvedPageUids' => implode(', ', $this->checkTargetResolver->findUnresolvedPageUids($project, $snapshot)),
             'errors' => $this->errorRepository->findLatest($project->uid, self::LATEST_ERROR_LIMIT),
             'incidents' => array_map($this->mapIncident(...), $this->incidentRepository->findLatest($project->uid, self::LATEST_INCIDENT_LIMIT)),
             'environment' => $snapshot?->getCollectorData('environment'),

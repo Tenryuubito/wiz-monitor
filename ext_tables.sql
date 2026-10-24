@@ -2,6 +2,7 @@ CREATE TABLE tx_wizmonitor_project (
 	title varchar(255) DEFAULT '' NOT NULL,
 	base_url varchar(1024) DEFAULT '' NOT NULL,
 	check_urls text,
+	check_pages varchar(255) DEFAULT '' NOT NULL,
 	expected_keyword varchar(255) DEFAULT '' NOT NULL,
 	secret_encrypted text
 );

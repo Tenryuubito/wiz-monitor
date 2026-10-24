@@ -57,6 +57,9 @@
 			<trans-unit id="module.section.checks" resname="module.section.checks">
 				<source>Availability checks</source>
 			</trans-unit>
+			<trans-unit id="module.checks.unresolvedPages" resname="module.checks.unresolvedPages">
+				<source>These page UIDs could not be resolved to a public URL by the client: %s</source>
+			</trans-unit>
 			<trans-unit id="module.section.errors" resname="module.section.errors">
 				<source>Errors</source>
 			</trans-unit>

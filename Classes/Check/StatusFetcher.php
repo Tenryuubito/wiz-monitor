@@ -40,7 +40,7 @@ final readonly class StatusFetcher
 
         for ($page = 0; $page < self::MAXIMUM_ERROR_PAGES; $page++) {
             try {
-                $payload = $this->requestPage($endpoint, $secret, new StatusRequest($cursor));
+                $payload = $this->requestPage($endpoint, $secret, new StatusRequest($cursor, $project->checkPageUids));
             } catch (\Throwable $throwable) {
                 return FetchResult::failure($throwable->getMessage());
             }

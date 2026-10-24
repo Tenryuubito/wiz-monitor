@@ -27,6 +27,14 @@
 				<source>One path per line relative to the base URL, e.g. /services or /en/services. If empty, the start page is checked.</source>
 				<target>Ein Pfad pro Zeile relativ zur Basis-URL, z. B. /leistungen oder /en/services. Ist das Feld leer, wird die Startseite geprüft.</target>
 			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.check_pages" resname="tx_wizmonitor_project.check_pages">
+				<source>Pages for availability checks</source>
+				<target>Seiten für die Erreichbarkeitsprüfung</target>
+			</trans-unit>
+			<trans-unit id="tx_wizmonitor_project.check_pages.description" resname="tx_wizmonitor_project.check_pages.description">
+				<source>Comma-separated page UIDs of the monitored installation. The client resolves them to URLs in all enabled languages. Requires the configured secret.</source>
+				<target>Kommagetrennte Seiten-UIDs der überwachten Installation. Der Client löst sie in URLs aller aktiven Sprachen auf. Setzt das konfigurierte Secret voraus.</target>
+			</trans-unit>
 			<trans-unit id="tx_wizmonitor_project.expected_keyword" resname="tx_wizmonitor_project.expected_keyword">
 				<source>Expected keyword</source>
 				<target>Erwarteter Begriff</target>

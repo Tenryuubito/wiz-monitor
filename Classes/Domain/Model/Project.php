@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tenryuubito\WizMonitor\Domain\Model;
 
+use Tenryuubito\WizMonitorClient\Status\StatusRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 final readonly class Project
 {
     public function __construct(
@@ -11,6 +14,7 @@ final readonly class Project
         public string $title,
         public string $baseUrl,
         public array $checkUrls,
+        public array $checkPageUids,
         public string $expectedKeyword,
         public string $encryptedSecret,
         public bool $disabled,
@@ -35,6 +39,9 @@ final readonly class Project
             title: (string)$row['title'],
             baseUrl: $baseUrl,
             checkUrls: $checkUrls !== [] ? $checkUrls : [$baseUrl . '/'],
+            checkPageUids: StatusRequest::normalizePageUids(
+                GeneralUtility::intExplode(',', (string)($row['check_pages'] ?? ''), true),
+            ),
             expectedKeyword: trim((string)($row['expected_keyword'] ?? '')),
             encryptedSecret: (string)($row['secret_encrypted'] ?? ''),
             disabled: (bool)($row['hidden'] ?? false),
