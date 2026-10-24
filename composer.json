@@ -1,0 +1,45 @@
+{
+    "name": "tenryuubito/wiz-monitor",
+    "description": "Central TYPO3 backend module that monitors availability, security updates, errors and system health of TYPO3 installations running tenryuubito/wiz-monitor-client",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "typo3",
+        "typo3-extension",
+        "monitoring",
+        "uptime",
+        "security-advisories",
+        "error-tracking"
+    ],
+    "homepage": "https://github.com/Tenryuubito/wiz-monitor",
+    "support": {
+        "issues": "https://github.com/Tenryuubito/wiz-monitor/issues",
+        "source": "https://github.com/Tenryuubito/wiz-monitor"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-openssl": "*",
+        "ext-sodium": "*",
+        "composer/semver": "^3.4",
+        "tenryuubito/wiz-monitor-client": "^1.0",
+        "typo3/cms-backend": "^14.0",
+        "typo3/cms-core": "^14.0",
+        "typo3/cms-fluid": "^14.0"
+    },
+    "suggest": {
+        "typo3/cms-scheduler": "Runs the wizmonitor:run command periodically through the \"Execute console commands\" task"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tenryuubito\\WizMonitor\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "wiz_monitor"
+        },
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}

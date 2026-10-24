@@ -1,0 +1,21 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Tenryuubito\WizMonitor\:
+    resource: '../Classes/*'
+    exclude:
+      - '../Classes/Domain/Model/*'
+      - '../Classes/Enum/*'
+      - '../Classes/Evaluation/CategoryResult.php'
+      - '../Classes/Evaluation/Evaluation.php'
+      - '../Classes/Evaluation/EvaluationContext.php'
+      - '../Classes/Evaluation/Finding.php'
+      - '../Classes/Incident/IncidentTransition.php'
+
+  cache.wiz_monitor_external:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['wiz_monitor_external']

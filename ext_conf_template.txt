@@ -1,0 +1,10 @@
+# cat=notification; type=string; label=LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:configuration.notificationRecipient
+notificationRecipient =
+# cat=notification; type=string; label=LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:configuration.notificationLanguage
+notificationLanguage = en
+# cat=checks; type=int+; label=LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:configuration.requestTimeout
+requestTimeout = 10
+# cat=checks; type=int+; label=LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:configuration.slowResponseThreshold
+slowResponseThreshold = 3000
+# cat=checks; type=int+; label=LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:configuration.retentionDays
+retentionDays = 30
