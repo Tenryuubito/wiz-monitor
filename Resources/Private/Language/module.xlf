@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:wiz_monitor/Resources/Private/Language/module.xlf" date="2026-10-24T12:00:00Z" product-name="wiz_monitor">
+		<header/>
+		<body>
+			<trans-unit id="title" resname="title">
+				<source>Wiz Monitor</source>
+			</trans-unit>
+			<trans-unit id="short_description" resname="short_description">
+				<source>Monitoring of TYPO3 installations</source>
+			</trans-unit>
+			<trans-unit id="description" resname="description">
+				<source>Availability, security updates, errors and system health of monitored TYPO3 installations.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

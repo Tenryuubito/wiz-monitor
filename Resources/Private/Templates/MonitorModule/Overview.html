@@ -1,0 +1,49 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Module" />
+<f:section name="Content">
+    <f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
+    <h1><f:translate key="{ll}module.overview.title" /></h1>
+    <f:if condition="{rows}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th><f:translate key="{ll}module.column.project" /></th>
+                            <th><f:translate key="{ll}module.column.overall" /></th>
+                            <f:for each="{categories}" as="category">
+                                <th><f:translate key="{ll}category.{category}" /></th>
+                            </f:for>
+                            <th><f:translate key="{ll}module.column.lastSuccess" /></th>
+                            <th><f:translate key="{ll}module.column.lastEvaluation" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{rows}" as="row">
+                            <tr>
+                                <td>
+                                    <a href="{row.detailUri}"><strong>{row.project.title}</strong></a>
+                                    <f:if condition="{row.project.disabled}">
+                                        <span class="badge badge-secondary"><f:translate key="{ll}module.project.disabled" /></span>
+                                    </f:if>
+                                    <br>
+                                    <span class="text-body-secondary">{row.project.baseUrl}</span>
+                                </td>
+                                <td><f:render partial="MonitorModule/StatusBadge" arguments="{status: row.overallStatus}" /></td>
+                                <f:for each="{row.categoryStatuses}" as="categoryStatus">
+                                    <td><f:render partial="MonitorModule/StatusBadge" arguments="{status: categoryStatus.status}" /></td>
+                                </f:for>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: row.snapshot.lastSuccessAt}" /></td>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: row.snapshot.evaluatedAt}" /></td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <f:be.infobox title="{f:translate(key: '{ll}module.overview.empty.title')}" message="{f:translate(key: '{ll}module.overview.empty.message')}" />
+        </f:else>
+    </f:if>
+</f:section>
+</html>

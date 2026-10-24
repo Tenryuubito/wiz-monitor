@@ -1,0 +1,282 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Module" />
+<f:section name="Content">
+    <f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
+
+    <h1>{project.title} <f:render partial="MonitorModule/StatusBadge" arguments="{status: overallStatus}" /></h1>
+    <p>
+        <a href="{project.baseUrl}" target="_blank" rel="noopener noreferrer">{project.baseUrl}</a>
+    </p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <th scope="row"><f:translate key="{ll}module.column.lastSuccess" /></th>
+                        <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: snapshot.lastSuccessAt}" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><f:translate key="{ll}module.column.lastAttempt" /></th>
+                        <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: snapshot.lastAttemptAt}" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><f:translate key="{ll}module.column.lastEvaluation" /></th>
+                        <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: snapshot.evaluatedAt}" /></td>
+                    </tr>
+                    <f:if condition="{snapshot.failureReason}">
+                        <tr>
+                            <th scope="row"><f:translate key="{ll}module.column.failureReason" /></th>
+                            <td class="text-danger">{snapshot.failureReason}</td>
+                        </tr>
+                    </f:if>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <form action="{runUri}" method="post" class="mb-2">
+                <input type="hidden" name="project" value="{project.uid}">
+                <button type="submit" class="btn btn-primary">
+                    <f:translate key="{ll}module.action.run" />
+                </button>
+            </form>
+            <form action="{generateSecretUri}" method="post">
+                <input type="hidden" name="project" value="{project.uid}">
+                <button type="submit" class="btn btn-default">
+                    <f:if condition="{project.secretConfigured}">
+                        <f:then><f:translate key="{ll}module.action.rotateSecret" /></f:then>
+                        <f:else><f:translate key="{ll}module.action.generateSecret" /></f:else>
+                    </f:if>
+                </button>
+            </form>
+            <p class="mt-2 text-body-secondary">
+                <f:translate key="{ll}module.secret.hint" arguments="{0: secretEnvironmentVariable}" />
+            </p>
+        </div>
+    </div>
+
+    <h2><f:translate key="{ll}module.section.status" /></h2>
+    <div class="row">
+        <f:for each="{categoryResults}" as="categoryResult">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <strong><f:translate key="{ll}category.{categoryResult.category}" /></strong>
+                        <f:render partial="MonitorModule/StatusBadge" arguments="{status: categoryResult.status}" />
+                    </div>
+                    <div class="card-body">
+                        <f:render partial="MonitorModule/FindingList" arguments="{findings: categoryResult.findings}" />
+                    </div>
+                </div>
+            </div>
+        </f:for>
+    </div>
+
+    <h2><f:translate key="{ll}module.section.checks" /></h2>
+    <f:if condition="{checks}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><f:translate key="{ll}module.column.url" /></th>
+                            <th><f:translate key="{ll}module.column.httpStatus" /></th>
+                            <th><f:translate key="{ll}module.column.responseTime" /></th>
+                            <th><f:translate key="{ll}module.column.tlsExpiresAt" /></th>
+                            <th><f:translate key="{ll}module.column.checkedAt" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{checks}" as="check">
+                            <tr>
+                                <td>
+                                    {check.url}
+                                    <f:if condition="{check.failure_reason}"><br><span class="text-danger">{check.failure_reason}</span></f:if>
+                                </td>
+                                <td>
+                                    <f:if condition="{check.reachable}">
+                                        <f:then><span class="badge badge-success">{check.http_status}</span></f:then>
+                                        <f:else><span class="badge badge-danger">{check.http_status}</span></f:else>
+                                    </f:if>
+                                </td>
+                                <td><f:translate key="{ll}module.value.milliseconds" arguments="{0: check.response_time}" /></td>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: check.tls_expires_at}" /></td>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: check.checked_at}" /></td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else><p class="text-body-secondary"><f:translate key="{ll}module.empty" /></p></f:else>
+    </f:if>
+
+    <h2><f:translate key="{ll}module.section.errors" /></h2>
+    <f:if condition="{errors}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><f:translate key="{ll}module.column.level" /></th>
+                            <th><f:translate key="{ll}module.column.message" /></th>
+                            <th><f:translate key="{ll}module.column.occurrences" /></th>
+                            <th><f:translate key="{ll}module.column.firstSeen" /></th>
+                            <th><f:translate key="{ll}module.column.lastSeen" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{errors}" as="error">
+                            <tr>
+                                <td><span class="badge badge-danger">{error.level}</span></td>
+                                <td>
+                                    <strong>{error.message}</strong>
+                                    <br>
+                                    <span class="text-body-secondary">{error.exception_class} {error.exception_code} · {error.file}:{error.line} · {error.channel}</span>
+                                    <f:if condition="{error.request_url}"><br><span class="text-body-secondary">{error.request_url}</span></f:if>
+                                </td>
+                                <td>{error.occurrences}</td>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: error.first_seen}" /></td>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: error.last_seen}" /></td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else><p class="text-body-secondary"><f:translate key="{ll}module.empty" /></p></f:else>
+    </f:if>
+
+    <h2><f:translate key="{ll}module.section.incidents" /></h2>
+    <f:if condition="{incidents}">
+        <f:then>
+            <div class="table-fit">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><f:translate key="{ll}module.column.category" /></th>
+                            <th><f:translate key="{ll}module.column.status" /></th>
+                            <th><f:translate key="{ll}module.column.findings" /></th>
+                            <th><f:translate key="{ll}module.column.openedAt" /></th>
+                            <th><f:translate key="{ll}module.column.resolvedAt" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{incidents}" as="incident">
+                            <tr>
+                                <td><f:translate key="{ll}category.{incident.category}" /></td>
+                                <td>
+                                    <f:if condition="{incident.resolved_at}">
+                                        <f:then><f:render partial="MonitorModule/StatusBadge" arguments="{status: 'ok'}" /></f:then>
+                                        <f:else><f:render partial="MonitorModule/StatusBadge" arguments="{status: incident.status}" /></f:else>
+                                    </f:if>
+                                </td>
+                                <td><f:render partial="MonitorModule/FindingList" arguments="{findings: incident.decodedFindings}" /></td>
+                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: incident.opened_at}" /></td>
+                                <td>
+                                    <f:if condition="{incident.resolved_at}">
+                                        <f:then><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: incident.resolved_at}" /></f:then>
+                                        <f:else><f:translate key="{ll}module.incident.open" /></f:else>
+                                    </f:if>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else><p class="text-body-secondary"><f:translate key="{ll}module.empty" /></p></f:else>
+    </f:if>
+
+    <f:if condition="{environment}">
+        <h2><f:translate key="{ll}module.section.environment" /></h2>
+        <div class="table-fit">
+            <table class="table table-sm">
+                <tbody>
+                    <tr><th scope="row"><f:translate key="{ll}environment.typo3Version" /></th><td>{environment.typo3Version}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.phpVersion" /></th><td>{environment.phpVersion}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.applicationContext" /></th><td>{environment.applicationContext}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.database" /></th><td>{environment.databasePlatform} · {environment.databaseServerVersion}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.operatingSystem" /></th><td>{environment.operatingSystem}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.memoryLimit" /></th><td>{environment.memoryLimit}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.maxExecutionTime" /></th><td>{environment.maxExecutionTime}</td></tr>
+                    <tr><th scope="row"><f:translate key="{ll}environment.siteBaseUrls" /></th><td><f:for each="{environment.siteBaseUrls}" as="siteBaseUrl" iteration="iterator">{siteBaseUrl}<f:if condition="{iterator.isLast}"><f:else><br></f:else></f:if></f:for></td></tr>
+                    <f:if condition="{storage}">
+                        <tr><th scope="row"><f:translate key="{ll}environment.diskSpace" /></th><td><f:format.bytes>{storage.freeBytes}</f:format.bytes> / <f:format.bytes>{storage.totalBytes}</f:format.bytes></td></tr>
+                    </f:if>
+                    <f:if condition="{hardening}">
+                        <tr><th scope="row"><f:translate key="{ll}environment.administrators" /></th><td>{hardening.activeAdministratorCount}</td></tr>
+                        <tr><th scope="row"><f:translate key="{ll}environment.failedLogins" /></th><td>{hardening.failedLoginsLastDay}</td></tr>
+                    </f:if>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+
+    <f:if condition="{scheduler.tasks}">
+        <h2><f:translate key="{ll}module.section.scheduler" /></h2>
+        <div class="table-fit">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="{ll}module.column.task" /></th>
+                        <th><f:translate key="{ll}module.column.status" /></th>
+                        <th><f:translate key="{ll}module.column.lastExecution" /></th>
+                        <th><f:translate key="{ll}module.column.nextExecution" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{scheduler.tasks}" as="task">
+                        <tr>
+                            <td>
+                                <strong>{task.description}</strong> [{task.uid}]
+                                <br>
+                                <span class="text-body-secondary">{task.type}</span>
+                            </td>
+                            <td>
+                                <f:if condition="{task.disabled}">
+                                    <f:then><span class="badge badge-secondary"><f:translate key="{ll}module.task.disabled" /></span></f:then>
+                                    <f:else if="{task.failed}"><span class="badge badge-danger"><f:translate key="{ll}module.task.failed" /></span></f:else>
+                                    <f:else><span class="badge badge-success"><f:translate key="{ll}module.task.active" /></span></f:else>
+                                </f:if>
+                            </td>
+                            <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: task.lastExecution}" /></td>
+                            <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: task.nextExecution}" /></td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+
+    <f:if condition="{packages}">
+        <h2><f:translate key="{ll}module.section.packages" /></h2>
+        <div class="table-fit">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th><f:translate key="{ll}module.column.package" /></th>
+                        <th><f:translate key="{ll}module.column.version" /></th>
+                        <th><f:translate key="{ll}module.column.type" /></th>
+                        <th><f:translate key="{ll}module.column.advisories" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{packages}" as="package">
+                        <tr>
+                            <td>{package.name}</td>
+                            <td>{package.version}</td>
+                            <td>{package.type}</td>
+                            <td>
+                                <f:for each="{package.advisories}" as="advisory">
+                                    <span class="badge badge-danger">{advisory.2}</span> {advisory.3}<br>
+                                </f:for>
+                            </td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+</f:section>
+</html>

@@ -1,0 +1,9 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
+<f:switch expression="{status}">
+    <f:case value="ok"><span class="badge badge-success"><f:translate key="{ll}status.ok" /></span></f:case>
+    <f:case value="warning"><span class="badge badge-warning"><f:translate key="{ll}status.warning" /></span></f:case>
+    <f:case value="critical"><span class="badge badge-danger"><f:translate key="{ll}status.critical" /></span></f:case>
+    <f:defaultCase><span class="badge badge-secondary"><f:translate key="{ll}status.unknown" /></span></f:defaultCase>
+</f:switch>
+</html>

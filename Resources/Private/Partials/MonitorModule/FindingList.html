@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
+<f:if condition="{findings}">
+    <f:then>
+        <ul class="list-unstyled mb-0">
+            <f:for each="{findings}" as="finding">
+                <li class="mb-1">
+                    <f:render partial="MonitorModule/StatusBadge" arguments="{status: finding.status}" />
+                    <f:translate key="{ll}finding.{finding.key}" arguments="{finding.arguments}" />
+                </li>
+            </f:for>
+        </ul>
+    </f:then>
+    <f:else>
+        <span class="text-body-secondary"><f:translate key="{ll}module.findings.none" /></span>
+    </f:else>
+</f:if>
+</html>
