@@ -8,7 +8,6 @@ return [
     'wiz_monitor' => [
         // Teil des Toolkits (vorher: parent "system", access "admin")
         'parent' => 'toolkit',
-        'position' => ['after' => 'toolkit_customers'],
         'access' => 'user',
         'path' => '/module/toolkit/monitor',
         'workspaces' => 'live',
