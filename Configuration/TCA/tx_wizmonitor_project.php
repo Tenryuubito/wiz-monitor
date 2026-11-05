@@ -12,7 +12,8 @@ return [
         'delete' => 'deleted',
         'default_sortby' => 'title',
         'rootLevel' => 1,
-        'adminOnly' => true,
+        // Teil des Toolkits: auch für Nicht-Admins der Gruppe „Toolkit“ bearbeitbar
+        'security' => ['ignoreRootLevelRestriction' => true],
         'searchFields' => 'title,base_url',
         'enablecolumns' => [
             'disabled' => 'hidden',
@@ -23,11 +24,25 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'title, base_url, check_urls, check_pages, expected_keyword, --div--;core.form.tabs:access, hidden',
+            'showitem' => 'toolkit_project, title, base_url, check_urls, check_pages, expected_keyword, --div--;core.form.tabs:access, hidden',
         ],
     ],
     'columns' => [
+        'toolkit_project' => [
+            'label' => 'Toolkit-Projekt',
+            'description' => 'Titel, Basis-URL und Prüfpfade kommen aus dem Projekt und werden bei jeder Änderung dort übernommen.',
+            'onChange' => 'reload',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_toolkit_project',
+                'foreign_table_where' => 'ORDER BY tx_toolkit_project.title',
+                'items' => [['label' => '– ohne Toolkit-Projekt –', 'value' => 0]],
+                'default' => 0,
+            ],
+        ],
         'title' => [
+            'displayCond' => 'FIELD:toolkit_project:=:0',
             'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.title',
             'config' => [
                 'type' => 'input',
@@ -38,6 +53,7 @@ return [
             ],
         ],
         'base_url' => [
+            'displayCond' => 'FIELD:toolkit_project:=:0',
             'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.base_url',
             'description' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.base_url.description',
             'config' => [
@@ -50,6 +66,7 @@ return [
             ],
         ],
         'check_urls' => [
+            'displayCond' => 'FIELD:toolkit_project:=:0',
             'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.check_urls',
             'description' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.check_urls.description',
             'config' => [

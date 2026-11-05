@@ -1,49 +1,49 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:tk="http://typo3.org/ns/WizTech/ToolkitCore/Components" data-namespace-typo3-fluid="true">
 <f:layout name="Module" />
 <f:section name="Content">
-    <f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
-    <h1><f:translate key="{ll}module.overview.title" /></h1>
+<f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
+<div class="tk">
+    <tk:header title="Monitor" subtitle="Prüfung alle fünf Minuten über wiz-monitor-client auf den Kundenseiten" />
     <f:if condition="{rows}">
         <f:then>
-            <div class="table-fit">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th><f:translate key="{ll}module.column.project" /></th>
-                            <th><f:translate key="{ll}module.column.overall" /></th>
-                            <f:for each="{categories}" as="category">
-                                <th><f:translate key="{ll}category.{category}" /></th>
-                            </f:for>
-                            <th><f:translate key="{ll}module.column.lastSuccess" /></th>
-                            <th><f:translate key="{ll}module.column.lastEvaluation" /></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <f:for each="{rows}" as="row">
+            <tk:card flush="{true}">
+                <div class="tk-table-wrap">
+                    <table class="tk-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <a href="{row.detailUri}"><strong>{row.project.title}</strong></a>
-                                    <f:if condition="{row.project.disabled}">
-                                        <span class="badge badge-secondary"><f:translate key="{ll}module.project.disabled" /></span>
-                                    </f:if>
-                                    <br>
-                                    <span class="text-body-secondary">{row.project.baseUrl}</span>
-                                </td>
-                                <td><f:render partial="MonitorModule/StatusBadge" arguments="{status: row.overallStatus}" /></td>
-                                <f:for each="{row.categoryStatuses}" as="categoryStatus">
-                                    <td><f:render partial="MonitorModule/StatusBadge" arguments="{status: categoryStatus.status}" /></td>
-                                </f:for>
-                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: row.snapshot.lastSuccessAt}" /></td>
-                                <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: row.snapshot.evaluatedAt}" /></td>
+                                <th><f:translate key="{ll}module.column.project" /></th>
+                                <th><f:translate key="{ll}module.column.overall" /></th>
+                                <f:for each="{categories}" as="category"><th><f:translate key="{ll}category.{category}" /></th></f:for>
+                                <th><f:translate key="{ll}module.column.lastSuccess" /></th>
+                                <th><f:translate key="{ll}module.column.lastEvaluation" /></th>
                             </tr>
-                        </f:for>
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            <f:for each="{rows}" as="row">
+                                <tr>
+                                    <td>
+                                        <a class="tk-link-row" href="{row.detailUri}">{row.project.title}</a>
+                                        <f:if condition="{row.project.disabled}"><tk:pill label="{f:translate(key: '{ll}module.project.disabled')}" state="neutral" /></f:if>
+                                        <br>
+                                        <f:if condition="{row.toolkit.customer}"><f:then><a class="tk-muted" href="{row.toolkit.customerUri}">{row.toolkit.customer.company}</a> · </f:then></f:if><span class="tk-mono tk-muted">{row.project.baseUrl}</span>
+                                    </td>
+                                    <td><f:render partial="MonitorModule/StatusBadge" arguments="{status: row.overallStatus}" /></td>
+                                    <f:for each="{row.categoryStatuses}" as="categoryStatus"><td><f:render partial="MonitorModule/StatusBadge" arguments="{status: categoryStatus.status}" /></td></f:for>
+                                    <td class="tk-mono"><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: row.snapshot.lastSuccessAt}" /></td>
+                                    <td class="tk-mono"><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: row.snapshot.evaluatedAt}" /></td>
+                                </tr>
+                            </f:for>
+                        </tbody>
+                    </table>
+                </div>
+            </tk:card>
         </f:then>
         <f:else>
-            <f:be.infobox title="{f:translate(key: '{ll}module.overview.empty.title')}" message="{f:translate(key: '{ll}module.overview.empty.message')}" />
+            <tk:card>
+                <tk:empty title="Noch keine überwachten Seiten" text="Öffne ein Projekt unter „Kunden &amp; Projekte“ und klicke dort auf „Überwachung einrichten“. Auf der Kundenseite muss wiz-monitor-client installiert sein." icon="actions-heart" />
+            </tk:card>
         </f:else>
     </f:if>
+</div>
 </f:section>
 </html>

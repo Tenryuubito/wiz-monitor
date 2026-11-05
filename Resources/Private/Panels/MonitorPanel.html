@@ -1,0 +1,41 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:tk="http://typo3.org/ns/WizTech/ToolkitCore/Components" data-namespace-typo3-fluid="true">
+<tk:card>
+    <f:if condition="{monitor}">
+        <f:then>
+            <tk:cardHead title="Monitor"><tk:pill label="{overall.label}" state="{overall.state}" /></tk:cardHead>
+            <f:if condition="{monitor.secretConfigured}">
+                <f:then>
+                    <f:if condition="{categories}">
+                        <f:then>
+                            <dl class="tk-kv">
+                                <f:for each="{categories}" as="category"><dt>{category.label}</dt><dd><tk:pill label="{category.stateLabel}" state="{category.state}" /></dd></f:for>
+                            </dl>
+                        </f:then>
+                        <f:else><p class="tk-muted">Noch keine Auswertung. Die nächste Prüfung läuft innerhalb von fünf Minuten.</p></f:else>
+                    </f:if>
+                    <f:if condition="{snapshot.lastSuccessAt}"><p class="tk-muted" style="font-size: .8rem">Letzte erfolgreiche Abfrage: <f:format.date format="d.m.Y H:i" date="@{snapshot.lastSuccessAt}" /></p></f:if>
+                </f:then>
+                <f:else>
+                    <div class="tk-notice tk-notice--warning"><span>Es fehlt noch das Geheimnis für die Kundenseite. Ohne es prüft der Monitor nur die Erreichbarkeit.</span></div>
+                </f:else>
+            </f:if>
+            <div class="tk-actions"><a class="btn btn-default btn-sm" href="{detailUri}">Details im Monitor</a></div>
+        </f:then>
+        <f:else>
+            <tk:cardHead title="Monitor" />
+            <f:if condition="{project.baseUrl}">
+                <f:then>
+                    <p class="tk-muted">Prüft alle fünf Minuten Erreichbarkeit, Sicherheitsupdates, Fehler und Systemzustand der Kundenseite. Auf der Kundenseite muss dafür wiz-monitor-client installiert sein.</p>
+                    <form method="post" action="{enableUri}">
+                        <input type="hidden" name="toolkitProject" value="{project.uid}">
+                        <button type="submit" class="btn btn-primary btn-sm">Überwachung einrichten</button>
+                    </form>
+                </f:then>
+                <f:else>
+                    <p class="tk-muted">Für die Überwachung braucht das Projekt eine Basis-URL.</p>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+</tk:card>
+</html>

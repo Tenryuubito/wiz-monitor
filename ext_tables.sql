@@ -73,3 +73,9 @@ CREATE TABLE tx_wizmonitor_incident (
 	PRIMARY KEY (uid),
 	KEY project_category_open (project, category, resolved_at)
 );
+
+CREATE TABLE tx_wizmonitor_project (
+	toolkit_project int(11) unsigned DEFAULT '0' NOT NULL,
+
+	KEY toolkit_project (toolkit_project)
+);

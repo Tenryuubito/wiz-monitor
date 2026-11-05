@@ -4,49 +4,30 @@ declare(strict_types=1);
 
 namespace Tenryuubito\WizMonitor\Security;
 
+use WizTech\ToolkitCore\Security\SecretVault as ToolkitSecretVault;
+
+/**
+ * Projektgeheimnisse des Monitors. Nutzt den Tresor aus toolkit_core mit dem bisherigen Schlüsselkontext,
+ * damit vorhandene Geheimnisse nach der Übernahme in das Toolkit gültig bleiben.
+ */
 final readonly class SecretVault
 {
-    private const SECRET_BYTES = 32;
     private const KEY_CONTEXT = 'tenryuubito/wiz-monitor:project-secret';
+
+    public function __construct(private ToolkitSecretVault $vault) {}
 
     public function generateSecret(): string
     {
-        return sodium_bin2base64(random_bytes(self::SECRET_BYTES), SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING);
+        return $this->vault->generateSecret();
     }
 
     public function encrypt(string $secret): string
     {
-        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-        return sodium_bin2base64($nonce . sodium_crypto_secretbox($secret, $nonce, $this->deriveKey()), SODIUM_BASE64_VARIANT_ORIGINAL);
+        return $this->vault->encrypt($secret, self::KEY_CONTEXT);
     }
 
     public function decrypt(string $encryptedSecret): ?string
     {
-        if ($encryptedSecret === '') {
-            return null;
-        }
-        try {
-            $decoded = sodium_base642bin($encryptedSecret, SODIUM_BASE64_VARIANT_ORIGINAL);
-        } catch (\SodiumException) {
-            return null;
-        }
-        if (strlen($decoded) <= SODIUM_CRYPTO_SECRETBOX_NONCEBYTES) {
-            return null;
-        }
-        $secret = sodium_crypto_secretbox_open(
-            substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES),
-            substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES),
-            $this->deriveKey(),
-        );
-        return $secret === false ? null : $secret;
-    }
-
-    private function deriveKey(): string
-    {
-        $encryptionKey = (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] ?? '');
-        if ($encryptionKey === '') {
-            throw new \RuntimeException('TYPO3 encryptionKey is not configured', 1761300001);
-        }
-        return hash_hkdf('sha256', $encryptionKey, SODIUM_CRYPTO_SECRETBOX_KEYBYTES, self::KEY_CONTEXT);
+        return $this->vault->decrypt($encryptedSecret, self::KEY_CONTEXT);
     }
 }

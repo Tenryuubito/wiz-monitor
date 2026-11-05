@@ -1,16 +1,19 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:tk="http://typo3.org/ns/WizTech/ToolkitCore/Components" data-namespace-typo3-fluid="true">
 <f:layout name="Module" />
 <f:section name="Content">
     <f:variable name="ll" value="LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_be.xlf:" />
 
-    <h1>{project.title} <f:render partial="MonitorModule/StatusBadge" arguments="{status: overallStatus}" /></h1>
-    <p>
-        <a href="{project.baseUrl}" target="_blank" rel="noopener noreferrer">{project.baseUrl}</a>
-    </p>
+<div class="tk tk-legacy">
+    <tk:header title="{project.title}" eyebrow="Monitor" />
+    <div class="tk-subtitle">
+        <f:render partial="MonitorModule/StatusBadge" arguments="{status: overallStatus}" />
+        <f:if condition="{toolkit}"><a href="{toolkit.customerUri}">{toolkit.customer.company}</a> · <a href="{toolkit.projectUri}">Projekt {toolkit.project.number}</a> ·</f:if>
+        <a class="tk-mono" href="{project.baseUrl}" target="_blank" rel="noopener noreferrer">{project.baseUrl}</a>
+    </div>
 
     <div class="row">
         <div class="col-md-6">
-            <table class="table table-sm">
+            <table class="tk-table tk-table--compact">
                 <tbody>
                     <tr>
                         <th scope="row"><f:translate key="{ll}module.column.lastSuccess" /></th>
@@ -27,7 +30,7 @@
                     <f:if condition="{snapshot.failureReason}">
                         <tr>
                             <th scope="row"><f:translate key="{ll}module.column.failureReason" /></th>
-                            <td class="text-danger">{snapshot.failureReason}</td>
+                            <td class="tk-text-critical">{snapshot.failureReason}</td>
                         </tr>
                     </f:if>
                 </tbody>
@@ -49,7 +52,7 @@
                     </f:if>
                 </button>
             </form>
-            <p class="mt-2 text-body-secondary">
+            <p class="tk-muted">
                 <f:translate key="{ll}module.secret.hint" arguments="{0: secretEnvironmentVariable}" />
             </p>
         </div>
@@ -74,14 +77,14 @@
 
     <h2><f:translate key="{ll}module.section.checks" /></h2>
     <f:if condition="{unresolvedPageUids}">
-        <div class="alert alert-warning">
+        <div class="tk-notice tk-notice--warning">
             <f:translate key="{ll}module.checks.unresolvedPages" arguments="{0: unresolvedPageUids}" />
         </div>
     </f:if>
     <f:if condition="{checks}">
         <f:then>
-            <div class="table-fit">
-                <table class="table table-striped">
+            <div class="tk-table-wrap">
+                <table class="tk-table">
                     <thead>
                         <tr>
                             <th><f:translate key="{ll}module.column.url" /></th>
@@ -96,12 +99,12 @@
                             <tr>
                                 <td>
                                     {check.url}
-                                    <f:if condition="{check.failure_reason}"><br><span class="text-danger">{check.failure_reason}</span></f:if>
+                                    <f:if condition="{check.failure_reason}"><br><span class="tk-text-critical">{check.failure_reason}</span></f:if>
                                 </td>
                                 <td>
                                     <f:if condition="{check.reachable}">
-                                        <f:then><span class="badge badge-success">{check.http_status}</span></f:then>
-                                        <f:else><span class="badge badge-danger">{check.http_status}</span></f:else>
+                                        <f:then><span class="tk-pill tk-pill--ok">{check.http_status}</span></f:then>
+                                        <f:else><span class="tk-pill tk-pill--critical">{check.http_status}</span></f:else>
                                     </f:if>
                                 </td>
                                 <td><f:translate key="{ll}module.value.milliseconds" arguments="{0: check.response_time}" /></td>
@@ -113,14 +116,14 @@
                 </table>
             </div>
         </f:then>
-        <f:else><p class="text-body-secondary"><f:translate key="{ll}module.empty" /></p></f:else>
+        <f:else><p class="tk-muted"><f:translate key="{ll}module.empty" /></p></f:else>
     </f:if>
 
     <h2><f:translate key="{ll}module.section.errors" /></h2>
     <f:if condition="{errors}">
         <f:then>
-            <div class="table-fit">
-                <table class="table table-striped">
+            <div class="tk-table-wrap">
+                <table class="tk-table">
                     <thead>
                         <tr>
                             <th><f:translate key="{ll}module.column.level" /></th>
@@ -133,12 +136,12 @@
                     <tbody>
                         <f:for each="{errors}" as="error">
                             <tr>
-                                <td><span class="badge badge-danger">{error.level}</span></td>
+                                <td><span class="tk-pill tk-pill--critical">{error.level}</span></td>
                                 <td>
                                     <strong>{error.message}</strong>
                                     <br>
-                                    <span class="text-body-secondary">{error.exception_class} {error.exception_code} · {error.file}:{error.line} · {error.channel}</span>
-                                    <f:if condition="{error.request_url}"><br><span class="text-body-secondary">{error.request_url}</span></f:if>
+                                    <span class="tk-muted">{error.exception_class} {error.exception_code} · {error.file}:{error.line} · {error.channel}</span>
+                                    <f:if condition="{error.request_url}"><br><span class="tk-muted">{error.request_url}</span></f:if>
                                 </td>
                                 <td>{error.occurrences}</td>
                                 <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: error.first_seen}" /></td>
@@ -149,14 +152,14 @@
                 </table>
             </div>
         </f:then>
-        <f:else><p class="text-body-secondary"><f:translate key="{ll}module.empty" /></p></f:else>
+        <f:else><p class="tk-muted"><f:translate key="{ll}module.empty" /></p></f:else>
     </f:if>
 
     <h2><f:translate key="{ll}module.section.incidents" /></h2>
     <f:if condition="{incidents}">
         <f:then>
-            <div class="table-fit">
-                <table class="table table-striped">
+            <div class="tk-table-wrap">
+                <table class="tk-table">
                     <thead>
                         <tr>
                             <th><f:translate key="{ll}module.column.category" /></th>
@@ -190,13 +193,13 @@
                 </table>
             </div>
         </f:then>
-        <f:else><p class="text-body-secondary"><f:translate key="{ll}module.empty" /></p></f:else>
+        <f:else><p class="tk-muted"><f:translate key="{ll}module.empty" /></p></f:else>
     </f:if>
 
     <f:if condition="{environment}">
         <h2><f:translate key="{ll}module.section.environment" /></h2>
-        <div class="table-fit">
-            <table class="table table-sm">
+        <div class="tk-table-wrap">
+            <table class="tk-table tk-table--compact">
                 <tbody>
                     <tr><th scope="row"><f:translate key="{ll}environment.typo3Version" /></th><td>{environment.typo3Version}</td></tr>
                     <tr><th scope="row"><f:translate key="{ll}environment.phpVersion" /></th><td>{environment.phpVersion}</td></tr>
@@ -220,8 +223,8 @@
 
     <f:if condition="{scheduler.tasks}">
         <h2><f:translate key="{ll}module.section.scheduler" /></h2>
-        <div class="table-fit">
-            <table class="table table-striped">
+        <div class="tk-table-wrap">
+            <table class="tk-table">
                 <thead>
                     <tr>
                         <th><f:translate key="{ll}module.column.task" /></th>
@@ -236,13 +239,13 @@
                             <td>
                                 <strong>{task.description}</strong> [{task.uid}]
                                 <br>
-                                <span class="text-body-secondary">{task.type}</span>
+                                <span class="tk-muted">{task.type}</span>
                             </td>
                             <td>
                                 <f:if condition="{task.disabled}">
-                                    <f:then><span class="badge badge-secondary"><f:translate key="{ll}module.task.disabled" /></span></f:then>
-                                    <f:else if="{task.failed}"><span class="badge badge-danger"><f:translate key="{ll}module.task.failed" /></span></f:else>
-                                    <f:else><span class="badge badge-success"><f:translate key="{ll}module.task.active" /></span></f:else>
+                                    <f:then><span class="tk-pill"><f:translate key="{ll}module.task.disabled" /></span></f:then>
+                                    <f:else if="{task.failed}"><span class="tk-pill tk-pill--critical"><f:translate key="{ll}module.task.failed" /></span></f:else>
+                                    <f:else><span class="tk-pill tk-pill--ok"><f:translate key="{ll}module.task.active" /></span></f:else>
                                 </f:if>
                             </td>
                             <td><f:render partial="MonitorModule/Timestamp" arguments="{timestamp: task.lastExecution}" /></td>
@@ -256,7 +259,7 @@
 
     <f:if condition="{packages}">
         <h2><f:translate key="{ll}module.section.packages" /></h2>
-        <div class="table-fit">
+        <div class="tk-table-wrap">
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
@@ -274,7 +277,7 @@
                             <td>{package.type}</td>
                             <td>
                                 <f:for each="{package.advisories}" as="advisory">
-                                    <span class="badge badge-danger">{advisory.2}</span> {advisory.3}<br>
+                                    <span class="tk-pill tk-pill--critical">{advisory.2}</span> {advisory.3}<br>
                                 </f:for>
                             </td>
                         </tr>
@@ -283,5 +286,6 @@
             </table>
         </div>
     </f:if>
+</div>
 </f:section>
 </html>

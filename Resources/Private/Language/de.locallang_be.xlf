@@ -5,7 +5,7 @@
 		<body>
 			<trans-unit id="module.title" resname="module.title">
 				<source>Wiz Monitor</source>
-				<target>Wiz Monitor</target>
+				<target>Monitor</target>
 			</trans-unit>
 			<trans-unit id="module.overview.title" resname="module.overview.title">
 				<source>Monitored projects</source>

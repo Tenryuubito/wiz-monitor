@@ -26,6 +26,7 @@ final readonly class NotificationMailer
         private MailerInterface $mailer,
         private MonitorConfiguration $monitorConfiguration,
         private LanguageServiceFactory $languageServiceFactory,
+        private \WizTech\ToolkitCore\Company\CompanyRepository $companyRepository,
     ) {}
 
     public function send(Project $project, array $transitions, array $newErrors): bool
@@ -53,7 +54,7 @@ final readonly class NotificationMailer
         $email = new FluidEmail();
         $email
             ->to(new Address($recipient))
-            ->from(new Address(MailUtility::getSystemFromAddress(), MailUtility::getSystemFromName() ?? ''))
+            ->from($this->buildSender())
             ->subject($subject)
             ->setTemplate(self::TEMPLATE_NAME)
             ->assignMultiple([
@@ -89,5 +90,15 @@ final readonly class NotificationMailer
     private function translateStatus(HealthStatus $status, LanguageService $languageService): string
     {
         return $languageService->sL(self::LANGUAGE_FILE . ':status.' . $status->value);
+    }
+
+    /** Toolkit: Absender aus den Firmendaten, sonst der Systemabsender */
+    private function buildSender(): Address
+    {
+        $company = $this->companyRepository->find();
+        if ($company !== null && $company->mailFromAddress !== '') {
+            return new Address($company->mailFromAddress, $company->mailFromName);
+        }
+        return new Address(MailUtility::getSystemFromAddress(), MailUtility::getSystemFromName() ?? '');
     }
 }

@@ -33,6 +33,10 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use Tenryuubito\WizMonitor\Toolkit\ToolkitProjectSync;
+use WizTech\ToolkitCore\Backend\ModuleViewFactory;
+use WizTech\ToolkitCrm\Domain\CustomerRepository;
+use WizTech\ToolkitCrm\Domain\ProjectRepository as ToolkitProjectRepository;
 
 #[AsController]
 final readonly class MonitorModuleController
@@ -55,6 +59,10 @@ final readonly class MonitorModuleController
         private SecretVault $secretVault,
         private MonitorRunner $monitorRunner,
         private CheckTargetResolver $checkTargetResolver,
+        private ModuleViewFactory $moduleViewFactory,
+        private ToolkitProjectSync $toolkitProjectSync,
+        private ToolkitProjectRepository $toolkitProjectRepository,
+        private CustomerRepository $customerRepository,
     ) {}
 
     public function overviewAction(ServerRequestInterface $request): ResponseInterface
@@ -89,7 +97,7 @@ final readonly class MonitorModuleController
         );
         $view->addButtonToButtonBar(
             $this->componentFactory->createLinkButton()
-                ->setHref($this->buildEditUri($project->uid, $request))
+                ->setHref($project->toolkitProject > 0 ? $this->buildToolkitEditUri($project->toolkitProject, $request) : $this->buildEditUri($project->uid, $request))
                 ->setTitle($this->translate('module.action.edit'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL)),
@@ -103,6 +111,7 @@ final readonly class MonitorModuleController
 
         return $view->assignMultiple([
             'project' => $project,
+            'toolkit' => $this->resolveToolkitContext($project),
             'snapshot' => $snapshot,
             'overallStatus' => $snapshot !== null && $snapshot->evaluatedAt > 0 ? $evaluation->getOverallStatus()->value : HealthStatus::Unknown->value,
             'categoryResults' => array_map($this->mapCategoryResult(...), $evaluation->getResults()),
@@ -138,6 +147,16 @@ final readonly class MonitorModuleController
         return $this->redirectToDetail($project->uid);
     }
 
+    /** Toolkit: Überwachung für ein Toolkit-Projekt einrichten (aus der Projektansicht) */
+    public function enableAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $toolkitProjectUid = (int)($request->getParsedBody()['toolkitProject'] ?? 0);
+        if ($toolkitProjectUid <= 0 || $this->toolkitProjectRepository->findByUid($toolkitProjectUid) === null) {
+            return $this->redirectToOverview();
+        }
+        return $this->redirectToDetail($this->toolkitProjectSync->enable($toolkitProjectUid));
+    }
+
     public function generateSecretAction(ServerRequestInterface $request): ResponseInterface
     {
         $project = $this->resolveProject($request);
@@ -162,9 +181,7 @@ final readonly class MonitorModuleController
 
     private function createView(ServerRequestInterface $request, string $titleKey): ModuleTemplate
     {
-        $view = $this->moduleTemplateFactory->create($request);
-        $view->setTitle($this->translate('module.title'), $this->translate($titleKey));
-        return $view;
+        return $this->moduleViewFactory->create($request, $this->translate('module.title'), $this->translate($titleKey));
     }
 
     private function addNewProjectButton(ModuleTemplate $view, ServerRequestInterface $request): void
@@ -189,6 +206,7 @@ final readonly class MonitorModuleController
         $evaluation = Evaluation::fromArray($snapshot?->evaluation ?? []);
         return [
             'project' => $project,
+            'toolkit' => $this->resolveToolkitContext($project),
             'snapshot' => $snapshot,
             'overallStatus' => $isEvaluated ? $evaluation->getOverallStatus()->value : HealthStatus::Unknown->value,
             'categoryStatuses' => array_map(
@@ -196,6 +214,7 @@ final readonly class MonitorModuleController
                 $evaluation->getResults(),
             ),
             'detailUri' => (string)$this->uriBuilder->buildUriFromRoute(self::MODULE_IDENTIFIER . '.detail', ['project' => $project->uid]),
+            'toolkit' => $this->resolveToolkitContext($project),
         ];
     }
 
@@ -246,6 +265,33 @@ final readonly class MonitorModuleController
     {
         return (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
             'edit' => [ProjectRepository::TABLE_NAME => [$projectUid => 'edit']],
+            'returnUrl' => (string)$request->getUri(),
+        ]);
+    }
+
+    /** Toolkit: Projekt und Kunde zu einem Monitor-Datensatz, mit Links ins Kundenmodul */
+    private function resolveToolkitContext(Project $project): ?array
+    {
+        if ($project->toolkitProject === 0) {
+            return null;
+        }
+        $toolkitProject = $this->toolkitProjectRepository->findByUid($project->toolkitProject);
+        if ($toolkitProject === null) {
+            return null;
+        }
+        $customer = $this->customerRepository->findByUid($toolkitProject->customerUid);
+        return [
+            'project' => $toolkitProject,
+            'customer' => $customer,
+            'projectUri' => (string)$this->uriBuilder->buildUriFromRoute('toolkit_customers.project', ['project' => $toolkitProject->uid]),
+            'customerUri' => $customer !== null ? (string)$this->uriBuilder->buildUriFromRoute('toolkit_customers.show', ['customer' => $customer->uid]) : '',
+        ];
+    }
+
+    private function buildToolkitEditUri(int $toolkitProjectUid, ServerRequestInterface $request): string
+    {
+        return (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+            'edit' => [ToolkitProjectSync::TOOLKIT_TABLE => [$toolkitProjectUid => 'edit']],
             'returnUrl' => (string)$request->getUri(),
         ]);
     }

@@ -15,3 +15,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][ExternalDat
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][1761300000] = 'EXT:wiz_monitor/Resources/Private/Templates/Email/';
+
+// Toolkit: Monitor-Datensätze mit Toolkit-Projekten synchron halten
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['wiz_monitor_toolkit']
+    = \Tenryuubito\WizMonitor\Toolkit\ToolkitProjectHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['wiz_monitor_toolkit']
+    = \Tenryuubito\WizMonitor\Toolkit\ToolkitProjectHook::class;

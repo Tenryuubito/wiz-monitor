@@ -5,22 +5,28 @@ declare(strict_types=1);
 namespace Tenryuubito\WizMonitor\Service;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use WizTech\ToolkitCore\Company\CompanyRepository;
 
 final readonly class MonitorConfiguration
 {
     private const EXTENSION_KEY = 'wiz_monitor';
-    private const DEFAULT_LANGUAGE = 'en';
+    private const DEFAULT_LANGUAGE = 'de';
     private const DEFAULT_REQUEST_TIMEOUT = 10;
     private const DEFAULT_SLOW_RESPONSE_THRESHOLD = 3000;
     private const DEFAULT_RETENTION_DAYS = 30;
 
     public function __construct(
         private ExtensionConfiguration $extensionConfiguration,
+        private CompanyRepository $companyRepository,
     ) {}
 
     public function getNotificationRecipient(): string
     {
         $recipient = trim((string)$this->get('notificationRecipient', ''));
+        if ($recipient === '') {
+            // Toolkit: ohne eigenen Empfänger geht die Meldung an die E-Mail aus den Firmendaten
+            $recipient = $this->companyRepository->find()?->email ?? '';
+        }
         return filter_var($recipient, FILTER_VALIDATE_EMAIL) !== false ? $recipient : '';
     }
 

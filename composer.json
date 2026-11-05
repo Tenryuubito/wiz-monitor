@@ -1,6 +1,6 @@
 {
     "name": "tenryuubito/wiz-monitor",
-    "description": "Central TYPO3 backend module that monitors availability, security updates, errors and system health of TYPO3 installations running tenryuubito/wiz-monitor-client",
+    "description": "Wiz-Tech Toolkit: überwacht Verfügbarkeit, Sicherheitsupdates, Fehler und Systemzustand von TYPO3-Installationen mit tenryuubito/wiz-monitor-client",
     "type": "typo3-cms-extension",
     "license": "GPL-2.0-or-later",
     "keywords": [
@@ -24,7 +24,9 @@
         "tenryuubito/wiz-monitor-client": "^1.0",
         "typo3/cms-backend": "^14.0",
         "typo3/cms-core": "^14.0",
-        "typo3/cms-fluid": "^14.0"
+        "typo3/cms-fluid": "^14.0",
+        "wiz-tech/toolkit-core": "@dev",
+        "wiz-tech/toolkit-crm": "@dev"
     },
     "suggest": {
         "typo3/cms-scheduler": "Runs the wizmonitor:run command periodically through the \"Execute console commands\" task"

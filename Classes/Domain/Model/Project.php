@@ -18,6 +18,7 @@ final readonly class Project
         public string $expectedKeyword,
         public string $encryptedSecret,
         public bool $disabled,
+        public int $toolkitProject = 0,
     ) {}
 
     public static function fromRow(array $row): self
@@ -45,6 +46,7 @@ final readonly class Project
             expectedKeyword: trim((string)($row['expected_keyword'] ?? '')),
             encryptedSecret: (string)($row['secret_encrypted'] ?? ''),
             disabled: (bool)($row['hidden'] ?? false),
+            toolkitProject: (int)($row['toolkit_project'] ?? 0),
         );
     }
 

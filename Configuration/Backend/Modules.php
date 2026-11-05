@@ -6,11 +6,13 @@ use Tenryuubito\WizMonitor\Controller\MonitorModuleController;
 
 return [
     'wiz_monitor' => [
-        'parent' => 'system',
-        'access' => 'admin',
-        'path' => '/module/system/wiz-monitor',
+        // Teil des Toolkits (vorher: parent "system", access "admin")
+        'parent' => 'toolkit',
+        'position' => ['after' => 'toolkit_customers'],
+        'access' => 'user',
+        'path' => '/module/toolkit/monitor',
         'workspaces' => 'live',
-        'iconIdentifier' => 'module-reports',
+        'iconIdentifier' => 'toolkit-monitor',
         'labels' => 'wiz_monitor.module',
         'routes' => [
             '_default' => [
@@ -25,6 +27,10 @@ return [
             ],
             'generateSecret' => [
                 'target' => MonitorModuleController::class . '::generateSecretAction',
+                'methods' => ['POST'],
+            ],
+            'enable' => [
+                'target' => MonitorModuleController::class . '::enableAction',
                 'methods' => ['POST'],
             ],
         ],
