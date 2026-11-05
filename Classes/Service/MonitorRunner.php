@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tenryuubito\WizMonitor\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Tenryuubito\WizMonitor\Event\IncidentTransitionsEvent;
+
 use Psr\Log\LoggerInterface;
 use Tenryuubito\WizMonitor\Check\HttpProbe;
 use Tenryuubito\WizMonitor\Check\StatusFetcher;
@@ -36,6 +39,7 @@ final readonly class MonitorRunner
         private ProjectEvaluator $projectEvaluator,
         private IncidentManager $incidentManager,
         private NotificationMailer $notificationMailer,
+        private EventDispatcherInterface $eventDispatcher,
         private MonitorConfiguration $monitorConfiguration,
         private CheckTargetResolver $checkTargetResolver,
         private LoggerInterface $logger,
@@ -90,6 +94,9 @@ final readonly class MonitorRunner
         $this->snapshotRepository->saveEvaluation($project->uid, $evaluation->toArray(), $now);
 
         $transitions = $this->incidentManager->apply($project, $evaluation, $now);
+        if ($transitions !== []) {
+            $this->eventDispatcher->dispatch(new IncidentTransitionsEvent($project, $transitions, $now));
+        }
         try {
             $this->notificationMailer->send($project, $transitions, $newErrors);
         } catch (\Throwable $throwable) {

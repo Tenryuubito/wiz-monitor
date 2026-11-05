@@ -79,3 +79,7 @@ CREATE TABLE tx_wizmonitor_project (
 
 	KEY toolkit_project (toolkit_project)
 );
+
+CREATE TABLE tx_wizmonitor_incident (
+	clickup_task_id varchar(32) DEFAULT '' NOT NULL
+);

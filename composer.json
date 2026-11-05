@@ -26,7 +26,8 @@
         "typo3/cms-core": "^14.0",
         "typo3/cms-fluid": "^14.0",
         "wiz-tech/toolkit-core": "@dev",
-        "wiz-tech/toolkit-crm": "@dev"
+        "wiz-tech/toolkit-crm": "@dev",
+        "wiz-tech/toolkit-clickup": "@dev"
     },
     "suggest": {
         "typo3/cms-scheduler": "Runs the wizmonitor:run command periodically through the \"Execute console commands\" task"

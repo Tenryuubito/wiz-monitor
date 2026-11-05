@@ -90,4 +90,28 @@ final readonly class IncidentRepository
             )
             ->executeStatement();
     }
+
+    /** Toolkit: zuletzt angelegter Incident einer Kategorie (offen oder behoben) */
+    public function findLatestForCategory(int $projectUid, HealthCategory $category): ?array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $row = $queryBuilder
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('project', $queryBuilder->createNamedParameter($projectUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('category', $queryBuilder->createNamedParameter($category->value)),
+            )
+            ->orderBy('uid', 'DESC')
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+        return $row === false ? null : $row;
+    }
+
+    /** Toolkit: ClickUp-Task zum Incident merken */
+    public function setClickupTask(int $uid, string $taskId): void
+    {
+        $this->connectionPool->getConnectionForTable(self::TABLE_NAME)->update(self::TABLE_NAME, ['clickup_task_id' => $taskId], ['uid' => $uid]);
+    }
 }
