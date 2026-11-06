@@ -1,26 +1,39 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<div class="r-kpis">
-    <div class="r-kpi"><span class="r-kpi__label">Verfügbarkeit</span><span class="r-kpi__value">{availability}</span></div>
-    <div class="r-kpi"><span class="r-kpi__label">Prüfungen</span><span class="r-kpi__value">{checks}</span></div>
-    <div class="r-kpi"><span class="r-kpi__label">Ø Antwortzeit</span><span class="r-kpi__value">{avgMs} ms</span></div>
-</div>
+<p class="r-lead">
+    Ihre Website war in diesem Monat zu <strong>{availability}</strong> erreichbar<f:if condition="{downtime}"><f:then>. Das entspricht insgesamt etwa <strong>{downtime}</strong> Ausfall.</f:then><f:else> – es gab keine nennenswerten Ausfälle.</f:else></f:if>
+    Wir prüfen rund um die Uhr in kurzen Abständen, ob die Website erreichbar ist und fehlerfrei antwortet.
+</p>
 <f:if condition="{coverageNote}"><p class="muted">Messwerte liegen ab {coverageNote} vor.</p></f:if>
+
+<h3>Störungen</h3>
 <f:if condition="{incidents}">
     <f:then>
         <table>
-            <thead><tr><th>Bereich</th><th>Schwere</th><th>Begonnen</th><th>Behoben</th></tr></thead>
+            <thead><tr><th>Was</th><th>Beginn</th><th>Dauer</th></tr></thead>
             <tbody>
                 <f:for each="{incidents}" as="incident">
-                    <tr><td>{incident.categoryLabel}</td><td>{incident.statusLabel}</td><td><f:format.date format="d.m.Y H:i" date="@{incident.opened_at}" /></td><td><f:if condition="{incident.resolved_at}"><f:then><f:format.date format="d.m.Y H:i" date="@{incident.resolved_at}" /></f:then><f:else>noch offen</f:else></f:if></td></tr>
+                    <tr>
+                        <td>{incident.label}<f:if condition="{incident.serious}"> <span class="r-tag r-tag--critical">schwer</span></f:if></td>
+                        <td><f:format.date format="d.m.Y, H:i" date="@{incident.opened}" /> Uhr</td>
+                        <td><f:if condition="{incident.duration}"><f:then>{incident.duration}, behoben</f:then><f:else><strong>noch in Arbeit</strong></f:else></f:if></td>
+                    </tr>
                 </f:for>
             </tbody>
         </table>
+        <p class="muted">Wir werden bei jeder Störung automatisch benachrichtigt und kümmern uns darum, meist bevor sie Ihren Besuchern auffällt.</p>
     </f:then>
-    <f:else><p>Im Berichtszeitraum gab es keine Vorfälle.</p></f:else>
+    <f:else><p>Es gab keine Störungen.</p></f:else>
 </f:if>
+
 <h3>Sicherheit</h3>
+<f:if condition="{resolvedSecurity}"><p><strong>{resolvedSecurity}</strong> Sicherheitsproblem<f:if condition="{resolvedSecurity} > 1">e</f:if> wurde<f:if condition="{resolvedSecurity} > 1">n</f:if> in diesem Monat behoben.</p></f:if>
 <f:if condition="{security}">
-    <f:then><ul><f:for each="{security}" as="item"><li>{item}</li></f:for></ul></f:then>
-    <f:else><p>Keine offenen Sicherheitsupdates oder Warnungen.</p></f:else>
+    <f:then>
+        <ul class="r-list">
+            <f:for each="{security}" as="item"><li class="r-list__item r-list__item--{item.status}"><strong>{item.title}</strong><f:if condition="{item.text}"><br><span class="muted">{item.text}</span></f:if></li></f:for>
+        </ul>
+    </f:then>
+    <f:else><p>Ihre Website ist auf dem aktuellen Sicherheitsstand. Uns sind keine offenen Sicherheitslücken bekannt.</p></f:else>
 </f:if>
+<f:if condition="{software}"><p class="muted">Softwarestand<f:if condition="{securityDate}"> am {securityDate}</f:if>: {software}</p></f:if>
 </html>
