@@ -26,16 +26,6 @@ enum HealthStatus: string
         return $this === self::Warning || $this === self::Critical;
     }
 
-    public function getBadgeClass(): string
-    {
-        return match ($this) {
-            self::Ok => 'badge-success',
-            self::Unknown => 'badge-secondary',
-            self::Warning => 'badge-warning',
-            self::Critical => 'badge-danger',
-        };
-    }
-
     public static function worstOf(HealthStatus ...$statuses): self
     {
         $worst = self::Ok;
