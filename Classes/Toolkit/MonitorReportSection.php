@@ -175,11 +175,11 @@ final readonly class MonitorReportSection implements ReportSectionProviderInterf
         $html = $this->renderer->render('wiz_monitor', 'Monitor', [
             'availability' => $availabilityText,
             'downtime' => $availability !== null && $downtime >= 60 ? ReportFormat::span($downtime) : '',
-            'coverageNote' => $measuredFrom > $from + 86400 ? date('d.m.Y', $measuredFrom) : '',
+            'coverageNote' => $measuredFrom > $from + 86400 ? \WizTech\ToolkitCore\Format\DocumentFormat::date($measuredFrom) : '',
             'incidents' => $incidentRows,
             'resolvedSecurity' => $resolvedSecurity,
             'security' => $security,
-            'securityDate' => $snapshot !== null && $snapshot->evaluatedAt > 0 ? date('d.m.Y', $snapshot->evaluatedAt) : '',
+            'securityDate' => $snapshot !== null && $snapshot->evaluatedAt > 0 ? \WizTech\ToolkitCore\Format\DocumentFormat::date($snapshot->evaluatedAt) : '',
             'software' => implode(' · ', $software),
         ]);
         return [
