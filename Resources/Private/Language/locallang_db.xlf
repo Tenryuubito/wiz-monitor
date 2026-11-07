@@ -36,6 +36,15 @@
 			<trans-unit id="tx_wizmonitor_project.hidden" resname="tx_wizmonitor_project.hidden">
 				<source>Disable monitoring</source>
 			</trans-unit>
+			<trans-unit id="tx_toolkit_project.palette.monitor" resname="tx_toolkit_project.palette.monitor">
+				<source>Monitoring</source>
+			</trans-unit>
+			<trans-unit id="tx_toolkit_project.monitor_enabled" resname="tx_toolkit_project.monitor_enabled">
+				<source>Monitor the website</source>
+			</trans-unit>
+			<trans-unit id="tx_toolkit_project.monitor_enabled.description" resname="tx_toolkit_project.monitor_enabled.description">
+				<source>Checks availability, security updates, errors and system state every five minutes. The customer site needs wiz-monitor-client.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

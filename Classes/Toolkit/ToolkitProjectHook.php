@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Hält Monitor-Datensätze synchron, wenn ein Toolkit-Projekt geändert oder gelöscht wird
+ * Hält Monitor-Datensätze synchron, wenn ein Toolkit-Projekt angelegt, geändert oder gelöscht wird
  * oder ein Monitor-Datensatz mit einem Projekt verknüpft wird.
  */
 final readonly class ToolkitProjectHook
@@ -22,11 +22,11 @@ final readonly class ToolkitProjectHook
         if ($uid === 0) {
             return;
         }
-        if ($table === ToolkitProjectSync::TOOLKIT_TABLE && $status === 'update') {
+        if ($table === ToolkitProjectSync::TOOLKIT_TABLE) {
             $this->sync->syncFromProject($uid);
         }
         if ($table === ProjectRepository::TABLE_NAME && (int)($fieldArray['toolkit_project'] ?? 0) > 0) {
-            $this->sync->syncFromProject((int)$fieldArray['toolkit_project']);
+            $this->sync->enable((int)$fieldArray['toolkit_project']);
         }
     }
 

@@ -29,7 +29,7 @@ $tca = [
     'columns' => [
         'toolkit_project' => [
             'label' => 'Toolkit-Projekt',
-            'description' => 'Titel, Basis-URL und Prüfpfade kommen aus dem Projekt und werden bei jeder Änderung dort übernommen.',
+            'description' => 'Titel, Basis-URL, Prüfpfade, Prüfseiten, Schlüsselwort und An/Aus werden im Projekt gepflegt (Reiter „Website & Qualität“) und bei jeder Änderung übernommen.',
             'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
@@ -76,6 +76,7 @@ $tca = [
             ],
         ],
         'check_pages' => [
+            'displayCond' => 'FIELD:toolkit_project:=:0',
             'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.check_pages',
             'description' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.check_pages.description',
             'config' => [
@@ -86,6 +87,7 @@ $tca = [
             ],
         ],
         'expected_keyword' => [
+            'displayCond' => 'FIELD:toolkit_project:=:0',
             'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.expected_keyword',
             'description' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.expected_keyword.description',
             'config' => [
@@ -96,6 +98,7 @@ $tca = [
             ],
         ],
         'hidden' => [
+            'displayCond' => 'FIELD:toolkit_project:=:0',
             'label' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project.hidden',
             'config' => [
                 'type' => 'check',

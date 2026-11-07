@@ -9,7 +9,10 @@ use WizTech\ToolkitCore\Setup\SetupTaskInterface;
 
 final readonly class MonitorSetupTask implements SetupTaskInterface
 {
-    public function __construct(private CommandTaskInstaller $commandTaskInstaller) {}
+    public function __construct(
+        private CommandTaskInstaller $commandTaskInstaller,
+        private ToolkitProjectSync $sync,
+    ) {}
 
     public function getPriority(): int
     {
@@ -18,8 +21,13 @@ final readonly class MonitorSetupTask implements SetupTaskInterface
 
     public function run(): array
     {
-        return [$this->commandTaskInstaller->ensure('wizmonitor:run', '*/5 * * * *', 'Monitor: alle überwachten Seiten prüfen')
+        $messages = [$this->commandTaskInstaller->ensure('wizmonitor:run', '*/5 * * * *', 'Monitor: alle überwachten Seiten prüfen')
             ? 'Scheduler-Aufgabe „wizmonitor:run“ angelegt (alle 5 Minuten).'
             : 'Scheduler-Aufgabe „wizmonitor:run“ vorhanden.'];
+        $adopted = $this->sync->adoptExistingMonitors();
+        if ($adopted > 0) {
+            $messages[] = sprintf('Monitor-Einstellungen von %d Projekt(en) ins Projekt übernommen.', $adopted);
+        }
+        return $messages;
     }
 }

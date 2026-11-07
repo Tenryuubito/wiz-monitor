@@ -1,0 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:tk="http://typo3.org/ns/WizTech/ToolkitCore/Components" data-namespace-typo3-fluid="true">
+<tk:card title="Monitoring">
+    <div class="tk-notice tk-notice--warning" data-wizard-url-hint hidden>Ohne Basis-URL lässt sich die Überwachung nicht einschalten.</div>
+    <div class="tk-field tk-field--wide" data-wizard-field="Überwachung">
+        <label class="tk-switch form-check form-switch">
+            <input class="form-check-input{f:if(condition: input.errors.monitor_enabled, then: ' is-invalid')}" type="checkbox" role="switch" name="project[monitor_enabled]" value="1" data-wizard-needs-url{f:if(condition: input.values.monitor_enabled, then: ' checked')}>
+            <span><strong>Website überwachen</strong><small>Prüft alle fünf Minuten Erreichbarkeit, Sicherheitsupdates, Fehler und Systemzustand. Auf der Kundenseite muss wiz-monitor-client installiert sein; das Client-Secret erzeugst du nach dem Anlegen in der Projektansicht.</small></span>
+        </label>
+        <f:if condition="{input.errors.monitor_enabled}"><div class="invalid-feedback">{input.errors.monitor_enabled}</div></f:if>
+    </div>
+    <div class="tk-form" data-wizard-show-if="project[monitor_enabled]">
+        <div class="tk-field" data-wizard-field="Prüfseiten (UIDs)">
+            <label class="form-label" for="wizard-monitor-pages">Prüfseiten (Seiten-UIDs)</label>
+            <input class="form-control{f:if(condition: input.errors.monitor_check_pages, then: ' is-invalid')}" id="wizard-monitor-pages" name="project[monitor_check_pages]" value="{input.values.monitor_check_pages}" placeholder="1, 12, 34">
+            <f:if condition="{input.errors.monitor_check_pages}"><div class="invalid-feedback">{input.errors.monitor_check_pages}</div></f:if>
+            <div class="form-text">Optional. Der Client löst sie in URLs aller Sprachen auf (braucht das Secret).</div>
+        </div>
+        <div class="tk-field" data-wizard-field="Erwarteter Begriff">
+            <label class="form-label" for="wizard-monitor-keyword">Erwarteter Begriff</label>
+            <input class="form-control" id="wizard-monitor-keyword" name="project[monitor_expected_keyword]" value="{input.values.monitor_expected_keyword}">
+            <div class="form-text">Optional. Text, den jede geprüfte Seite enthalten muss.</div>
+        </div>
+    </div>
+</tk:card>
+</html>

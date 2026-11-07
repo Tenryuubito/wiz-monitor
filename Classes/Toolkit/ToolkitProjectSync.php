@@ -10,8 +10,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 
 /**
- * Verbindet Monitor-Datensätze mit Toolkit-Projekten. Titel, Basis-URL und Prüfpfade
- * pflegt man im Projekt; der Monitor übernimmt sie.
+ * Verbindet Monitor-Datensätze mit Toolkit-Projekten. Eingerichtet wird im Projekt
+ * (monitor_enabled, Prüfseiten, Schlüsselwort, Titel, Basis-URL, Prüfpfade); der Monitor übernimmt alles.
+ * Abschalten blendet den Monitor-Datensatz nur aus, damit Verlauf und Secret erhalten bleiben.
  */
 final readonly class ToolkitProjectSync
 {
@@ -32,36 +33,51 @@ final readonly class ToolkitProjectSync
             ->fetchOne();
     }
 
-    /** Legt den Monitor-Datensatz für ein Projekt an, falls noch keiner existiert */
+    /** Schaltet die Überwachung im Projekt ein und legt den Monitor-Datensatz an */
     public function enable(int $toolkitProjectUid): int
     {
-        $existing = $this->findMonitorUid($toolkitProjectUid);
-        if ($existing > 0) {
-            return $existing;
-        }
-        $fields = $this->fieldsFromProject($toolkitProjectUid);
-        if ($fields === null) {
+        $this->connectionPool->getConnectionForTable(self::TOOLKIT_TABLE)
+            ->update(self::TOOLKIT_TABLE, ['monitor_enabled' => 1, 'tstamp' => time()], ['uid' => $toolkitProjectUid]);
+        $this->syncFromProject($toolkitProjectUid);
+        $monitorUid = $this->findMonitorUid($toolkitProjectUid);
+        if ($monitorUid === 0) {
             throw new \RuntimeException('Toolkit project not found', 1793900401);
         }
-        $connection = $this->connectionPool->getConnectionForTable(ProjectRepository::TABLE_NAME);
-        $connection->insert(ProjectRepository::TABLE_NAME, $fields + [
-            'pid' => 0,
-            'toolkit_project' => $toolkitProjectUid,
-            'crdate' => time(),
-        ]);
-        return (int)$connection->lastInsertId();
+        return $monitorUid;
     }
 
-    /** Übernimmt Titel, Basis-URL und Prüfpfade aus dem Projekt in den Monitor-Datensatz */
+    /**
+     * Gleicht den Monitor-Datensatz mit dem Projekt ab: anlegen, wenn die Überwachung an ist
+     * und noch keiner existiert, sonst Felder und Sichtbarkeit übernehmen.
+     */
     public function syncFromProject(int $toolkitProjectUid): void
     {
-        $monitorUid = $this->findMonitorUid($toolkitProjectUid);
-        $fields = $this->fieldsFromProject($toolkitProjectUid);
-        if ($monitorUid === 0 || $fields === null) {
+        $project = $this->findProject($toolkitProjectUid);
+        if ($project === null) {
             return;
         }
-        $this->connectionPool->getConnectionForTable(ProjectRepository::TABLE_NAME)
-            ->update(ProjectRepository::TABLE_NAME, $fields, ['uid' => $monitorUid]);
+        $fields = [
+            'title' => (string)$project['title'],
+            'base_url' => (string)$project['base_url'],
+            'check_urls' => (string)$project['check_urls'],
+            'check_pages' => (string)($project['monitor_check_pages'] ?? ''),
+            'expected_keyword' => (string)($project['monitor_expected_keyword'] ?? ''),
+            'hidden' => (bool)($project['monitor_enabled'] ?? false) ? 0 : 1,
+            'tstamp' => time(),
+        ];
+        $connection = $this->connectionPool->getConnectionForTable(ProjectRepository::TABLE_NAME);
+        $monitorUid = $this->findMonitorUid($toolkitProjectUid);
+        if ($monitorUid > 0) {
+            $connection->update(ProjectRepository::TABLE_NAME, $fields, ['uid' => $monitorUid]);
+            return;
+        }
+        if ($fields['hidden'] === 0 && $fields['base_url'] !== '') {
+            $connection->insert(ProjectRepository::TABLE_NAME, $fields + [
+                'pid' => 0,
+                'toolkit_project' => $toolkitProjectUid,
+                'crdate' => time(),
+            ]);
+        }
     }
 
     /** Entfernt den Monitor-Datensatz, wenn das Projekt gelöscht wird */
@@ -71,24 +87,45 @@ final readonly class ToolkitProjectSync
             ->update(ProjectRepository::TABLE_NAME, ['deleted' => 1, 'tstamp' => time()], ['toolkit_project' => $toolkitProjectUid]);
     }
 
+    /**
+     * Übernimmt Einstellungen bestehender Monitor-Datensätze ins Projekt (einmalig nach Einführung von monitor_enabled).
+     * Nur sichtbare Monitore von Projekten, in denen die Überwachung noch aus ist.
+     * @return int Anzahl übernommener Projekte
+     */
+    public function adoptExistingMonitors(): int
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(ProjectRepository::TABLE_NAME);
+        $queryBuilder->getRestrictions()->removeAll()->add(new DeletedRestriction());
+        $monitors = $queryBuilder->select('m.toolkit_project', 'm.check_pages', 'm.expected_keyword')
+            ->from(ProjectRepository::TABLE_NAME, 'm')
+            ->join('m', self::TOOLKIT_TABLE, 'p', 'p.uid = m.toolkit_project AND p.deleted = 0 AND p.monitor_enabled = 0')
+            ->where(
+                $queryBuilder->expr()->gt('m.toolkit_project', 0),
+                $queryBuilder->expr()->eq('m.hidden', 0),
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $connection = $this->connectionPool->getConnectionForTable(self::TOOLKIT_TABLE);
+        foreach ($monitors as $monitor) {
+            $connection->update(self::TOOLKIT_TABLE, [
+                'monitor_enabled' => 1,
+                'monitor_check_pages' => (string)$monitor['check_pages'],
+                'monitor_expected_keyword' => (string)$monitor['expected_keyword'],
+            ], ['uid' => (int)$monitor['toolkit_project']]);
+        }
+        return count($monitors);
+    }
+
     /** @return array<string, mixed>|null */
-    private function fieldsFromProject(int $toolkitProjectUid): ?array
+    private function findProject(int $toolkitProjectUid): ?array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TOOLKIT_TABLE);
         $queryBuilder->getRestrictions()->removeAll()->add(new DeletedRestriction());
-        $row = $queryBuilder->select('title', 'base_url', 'check_urls')
+        $row = $queryBuilder->select('*')
             ->from(self::TOOLKIT_TABLE)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($toolkitProjectUid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
-        if ($row === false) {
-            return null;
-        }
-        return [
-            'title' => (string)$row['title'],
-            'base_url' => (string)$row['base_url'],
-            'check_urls' => (string)$row['check_urls'],
-            'tstamp' => time(),
-        ];
+        return $row === false ? null : $row;
     }
 }
