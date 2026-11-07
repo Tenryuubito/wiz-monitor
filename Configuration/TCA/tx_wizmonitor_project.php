@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-return [
+$tca = [
     'ctrl' => [
         'title' => 'LLL:EXT:wiz_monitor/Resources/Private/Language/locallang_db.xlf:tx_wizmonitor_project',
         'label' => 'title',
@@ -14,7 +14,6 @@ return [
         'rootLevel' => 1,
         // Teil des Toolkits: auch für Nicht-Admins der Gruppe „Toolkit“ bearbeitbar
         'security' => ['ignoreRootLevelRestriction' => true],
-        'searchFields' => 'title,base_url',
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
@@ -105,3 +104,10 @@ return [
         ],
     ],
 ];
+
+// Volltextsuche im Backend nur über die bisherigen Suchfelder (ehemals ctrl.searchFields)
+foreach (['check_urls', 'check_pages', 'expected_keyword'] as $field) {
+    $tca['columns'][$field]['config']['searchable'] = false;
+}
+
+return $tca;
